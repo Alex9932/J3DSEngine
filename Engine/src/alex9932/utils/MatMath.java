@@ -72,4 +72,17 @@ public class MatMath {
 		model.m33 = 1f;
 		return model;
 	}
+
+	public static Matrix4f createOrtho(float left, float right, float bottom, float top, float near, float far) {
+		Matrix4f mat = new Matrix4f();
+		mat.m00 = 2 / (right - left);
+		mat.m11 = 2 / (top - bottom);
+		mat.m22 = 2 / (far - near);
+		mat.m30 = -((right + left) / (right - left));
+		mat.m31 = -((top + bottom) / (top - bottom));
+		mat.m32 = -((far + near) / (far - near));
+		mat.m33 = 1;
+		
+		return mat;
+	}
 }

@@ -1,7 +1,6 @@
 package alex9932.engine.render;
 
 import org.json.JSONObject;
-import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -9,6 +8,7 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL43;
 import org.lwjgl.opengl.GLDebugMessageCallbackI;
+import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.util.vector.Vector3f;
 
 import alex9932.engine.animation.AnimationConstants;
@@ -16,6 +16,8 @@ import alex9932.engine.game.AnimatedGameObject;
 import alex9932.engine.game.Camera;
 import alex9932.engine.game.GameObject;
 import alex9932.engine.game.Scene;
+import alex9932.engine.render.gui.GuiRenderer;
+import alex9932.engine.render.gui.IGui;
 import alex9932.script.FileIO;
 import alex9932.utils.IKeyListener;
 import alex9932.utils.Resource;
@@ -34,6 +36,8 @@ public class Renderer implements IKeyListener{
 	private ShadowMapRenderer shadowRenderer;
 	private Fbo fbo;
 	private Fbo msfbo;
+	private GuiRenderer guirenderer;
+	private IGui gui = null;
 	
 	public Renderer() {
 		System.out.println("[Renderer] Starting up...");
@@ -100,6 +104,7 @@ public class Renderer implements IKeyListener{
 		msfbo = new Fbo(Display.getDisplay(), 1280, 720, Fbo.FBO_MULTISAMPLED, 4);
 		//GL11.glLineWidth(5);
 		PostProcessing.init();
+		guirenderer = new GuiRenderer();
 	}
 	
 	public void render(Scene scene) {
@@ -113,7 +118,14 @@ public class Renderer implements IKeyListener{
 		GL11.glClearColor(0.11f, 0.11f, 0.11f, 1);
 		
 		if(scene == null){
-			renderGui();
+			if(gui != null) {
+				GL11.glDisable(GL11.GL_CULL_FACE);
+				GL11.glDisable(GL11.GL_DEPTH_TEST);
+				guirenderer.render(gui);
+				GL11.glEnable(GL11.GL_CULL_FACE);
+				GL11.glEnable(GL11.GL_DEPTH_TEST);
+				GL11.glCullFace(GL11.GL_BACK);
+			}
 			Display.update();
 			return;
 		}
@@ -183,14 +195,21 @@ public class Renderer implements IKeyListener{
 		if(isWireframe) {
 			GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
 		}
-		
-		renderGui();
+
+		if(gui != null) {
+			GL11.glDisable(GL11.GL_CULL_FACE);
+			GL11.glDisable(GL11.GL_DEPTH_TEST);
+			guirenderer.render(gui);
+			GL11.glEnable(GL11.GL_CULL_FACE);
+			GL11.glEnable(GL11.GL_DEPTH_TEST);
+			GL11.glCullFace(GL11.GL_BACK);
+		}
 		
 		Display.update();
 	}
 
-	private void renderGui() {
-		
+	public void renderGui(IGui gui) {
+		this.gui = gui;
 	}
 
 	public void toggleWireframe() {

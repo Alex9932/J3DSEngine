@@ -51,6 +51,7 @@ public class Main extends IGameImpl implements IKeyListener{
 		AnimatedGameObject object = new AnimatedGameObject(body, animModel);
 		object.doAnimation(animation);
 		engine.scene.add(object);
+		engine.renderer.renderGui(new Gui());
 	}
 	
 	public static void main(String[] args) throws Exception {

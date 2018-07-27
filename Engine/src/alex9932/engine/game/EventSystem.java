@@ -16,7 +16,9 @@ public class EventSystem {
 	}
 	
 	public void sendSignal(Event event) {
+		//System.out.println(event);
 		for (int i = 0; i < eventHandlers.size(); i++) {
+			//System.out.println(eventHandlers.get(i).getClass().getName());
 			eventHandlers.get(i).handle(event);
 		}
 	}

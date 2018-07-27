@@ -74,13 +74,13 @@ public class Engine {
 			renderer.render(scene);
 			
 			if(toLoad){
-				loadLevel_cmd(level);
+				_loadLevel(level);
 			}
 		}
-		int_shutdown();
+		_shutdown();
 	}
 	
-	private void int_shutdown() {
+	private void _shutdown() {
 		game.shutdown();
 		physics.destroy();
 		renderer.destroy();
@@ -89,6 +89,7 @@ public class Engine {
 	}
 
 	public void shutdown() {
+		eventsys.sendSignal(Event.SHUTDOWN);
 		running = false;
 	}
 
@@ -101,7 +102,7 @@ public class Engine {
 		this.toLoad = true;
 	}
 
-	private void loadLevel_cmd(String level) throws Exception {
+	private void _loadLevel(String level) throws Exception {
 		System.out.println("[Engine] Starting load level: " + level + "...");
 		eventsys.sendSignal(Event.START_LOAD_LEVEL);
 		eventsys.sendSignal(Event.ON_LOAD_EVENT);
@@ -164,5 +165,9 @@ public class Engine {
 		eventsys.sendSignal(Event.END_LOAD_LEVEL);
 		System.out.println("[Engine] Done!");
 		this.toLoad = false;
+	}
+
+	public String getLevel() {
+		return level;
 	}
 }

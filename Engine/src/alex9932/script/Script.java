@@ -23,15 +23,27 @@ public class Script implements IKeyListener, IMouseListener, IEventHandler{
 	private ArrayList<String> moveCallBacks = new ArrayList<String>();
 	private ArrayList<String> dragCallBacks = new ArrayList<String>();
 	private ArrayList<String> onloadEventCallBacks = new ArrayList<String>();
+	private boolean renderable = false;
+	private ScriptsEngine scriptsEngine;
 
 	public Script(ScriptsEngine scriptsEngine, String src) throws Exception {
+		this.scriptsEngine = scriptsEngine;
 		ScriptEngine js = new ScriptEngineManager().getEngineByName("javascript");
 		Bindings bindings = js.getBindings(ScriptContext.ENGINE_SCOPE);
 		bindings.put("stdout", System.out);
 		bindings.put("script", scriptsEngine);
+		bindings.put("self", this);
 		bindings.put("sound", sound);
 		js.eval(src);
 		inv = (Invocable) js;
+	}
+
+	public void setRenderable(boolean b) {
+		this.renderable  = b;
+	}
+	
+	public boolean isRenderable() {
+		return renderable;
 	}
 	
 	public void construct() throws Exception {
@@ -171,17 +183,27 @@ public class Script implements IKeyListener, IMouseListener, IEventHandler{
 	}
 
 	@Override
-	public void startupEvent(String level) {
+	public void startupEvent() {
 		
 	}
 
 	@Override
-	public void shutdownEvent(String level) {
+	public void shutdownEvent() {
 		
 	}
 
 	@Override
 	public void handle(Event event) {
-		
+		if(event.equals(Event.END_LOAD_LEVEL)) {
+			this.endLoadLevelEvent(scriptsEngine.getEngine().getLevel());
+		} else if(event.equals(Event.ON_LOAD_EVENT)) {
+			this.onLoadEvent(scriptsEngine.getEngine().getLevel());
+		} else if(event.equals(Event.SHUTDOWN)) {
+			this.shutdownEvent();
+		} else if(event.equals(Event.START_LOAD_LEVEL)) {
+			this.startLoadLevelEvent(scriptsEngine.getEngine().getLevel());
+		} else if(event.equals(Event.STARTUP)) {
+			this.startupEvent();
+		}
 	}
 }

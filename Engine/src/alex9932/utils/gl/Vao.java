@@ -10,6 +10,7 @@ public class Vao {
 	private int id;
 	private ArrayList<Vbo> vbos = new ArrayList<Vbo>();
 	private IntBuffer indices;
+	private boolean ignore_culling;
 
 	public Vao() {
 		this.id = GL30.glGenVertexArrays();
@@ -45,5 +46,13 @@ public class Vao {
 	
 	public IntBuffer getIndices() {
 		return indices;
+	}
+
+	public void setIgnoreCulling(boolean b) {
+		this.ignore_culling = b;
+	}
+	
+	public boolean isIgnoreCulling() {
+		return ignore_culling;
 	}
 }

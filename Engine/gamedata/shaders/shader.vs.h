@@ -53,8 +53,6 @@ void main(void){
 
 	vec4 world_position = model * vec4(in_position, 1);
 	shadowCoords = shadowMapSpace * world_position;
-
-	gl_Position.z = -gl_Position.z;
 	
 	pass_textureCoords = in_textureCoords;
 

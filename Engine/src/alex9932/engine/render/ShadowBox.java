@@ -10,7 +10,7 @@ public class ShadowBox {
 	private static final float OFFSET = 50;
 	private static final Vector4f UP = new Vector4f(0, 1, 0, 0);
 	private static final Vector4f FORWARD = new Vector4f(0, 0, 1, 0);
-	public static final float SHADOW_DISTANCE = 150;
+	public static final float SHADOW_DISTANCE = 100;
 	
 	private float minX, maxX;
 	private float minY, maxY;
@@ -29,10 +29,6 @@ public class ShadowBox {
 	protected void update() {
 		Matrix4f rotation = calculateCameraRotationMatrix();
 		Vector3f forwardVector = new Vector3f(Matrix4f.transform(rotation, FORWARD, null));
-		
-		forwardVector.x = (float)Math.sin(Math.toRadians(-cam.getAngleX()));
-		forwardVector.y = (float)Math.tan(Math.toRadians(cam.getAngleY()));
-		forwardVector.z = (float)Math.cos(Math.toRadians(-cam.getAngleX()));
 		
 		Vector3f toFar = new Vector3f(forwardVector);
 		toFar.scale(SHADOW_DISTANCE);
@@ -126,8 +122,9 @@ public class ShadowBox {
 
 	private Matrix4f calculateCameraRotationMatrix() {
 		Matrix4f rotation = new Matrix4f();
-		rotation.rotate((float) Math.toRadians(cam.getAngleX()), new Vector3f(0, 1, 0));
-		rotation.rotate((float) Math.toRadians(cam.getAngleY()), new Vector3f(1, 0, 0));
+		rotation.setIdentity();
+		//rotation.rotate((float) Math.toRadians(cam.getAngleX()), new Vector3f(0, 1, 0));
+		//rotation.rotate((float) Math.toRadians(cam.getAngleY()), new Vector3f(1, 0, 0));
 		return rotation;
 	}
 

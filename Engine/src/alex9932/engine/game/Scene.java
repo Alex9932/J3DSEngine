@@ -43,6 +43,8 @@ public class Scene {
 			String key = tkeys.next();
 			textures.get(key).delete();
 		}
+		models.clear();
+		textures.clear();
 	}
 
 	public void setModels(HashMap<String, Vao> models) {

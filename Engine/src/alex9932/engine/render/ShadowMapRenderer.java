@@ -10,11 +10,9 @@ import org.lwjgl.util.vector.Vector3f;
 import alex9932.engine.game.AnimatedGameObject;
 import alex9932.engine.game.GameObject;
 import alex9932.engine.game.Scene;
-import alex9932.engine.render.GL;
-import alex9932.engine.render.ICamera;
 
 public class ShadowMapRenderer {
-	private static final int SHADOW_MAP_SIZE = 4096 *3;
+	private static final int SHADOW_MAP_SIZE = (int)(4096 * 2);
 
 	private ShadowFrameBuffer shadowFbo;
 	private ShadowShader shader;
@@ -31,8 +29,8 @@ public class ShadowMapRenderer {
 	}
 
 	public void render(Scene scene, Vector3f lightDirection) {
-		GL.disableCullFace();
-		//GL.cullFace(GL.GL_FRONT);
+		//GL.disableCullFace();
+		GL.cullFace(GL.GL_FRONT);
 		shadowBox.update();
 		prepare(lightDirection, shadowBox);
 
@@ -40,6 +38,9 @@ public class ShadowMapRenderer {
 			GameObject entity = scene.getObjects().get(i);
 			prepareInstance(entity);
 
+			if(entity.getVao().isIgnoreCulling()){
+				GL11.glDisable(GL11.GL_CULL_FACE);
+			}
 			entity.getVao().bind();
 			if(entity instanceof AnimatedGameObject){
 				shader.loadInt("model_type", Renderer.TYPE_MODEL_ANIMATED);
@@ -65,6 +66,10 @@ public class ShadowMapRenderer {
 				GL20.glDisableVertexAttribArray(2);
 			}
 			entity.getVao().unbind();
+			if(entity.getVao().isIgnoreCulling()){
+				GL11.glEnable(GL11.GL_CULL_FACE);
+				GL.cullFace(GL.GL_FRONT);
+			}
 		}
 		
 		GL20.glDisableVertexAttribArray(0);

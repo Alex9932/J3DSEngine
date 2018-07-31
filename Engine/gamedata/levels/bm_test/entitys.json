@@ -1,0 +1,163 @@
+{
+	"models": [
+		{
+			"name": "dragon",
+			"file": "dragon.fml"
+		},
+		{
+			"name": "box",
+			"file": "box.fml"
+		},
+		{
+			"ignore_culling": true,
+			"name": "pine",
+			"file": "pine.fml"
+		}
+	],
+	
+	"textures": [
+		{
+			"name": "t_box",
+			"file": "default.png"
+		},
+		{
+			"name": "t_pine",
+			"file": "pine.png"
+		}
+	],
+	
+	"entitys": [
+		{
+			"use_phys": false,
+			"x": 25,
+			"y": 0,
+			"z": 25,
+			"mass": 10,
+			"friction": 11,
+			"model": "dragon",
+			"texture": "t_box"
+		},
+		{
+			"use_phys": false,
+			"x": 10,
+			"y": 0,
+			"z": 10,
+			"mass": 10,
+			"friction": 11,
+			"model": "pine",
+			"texture": "t_pine"
+		},
+		{
+			"use_phys": false,
+			"x": 13,
+			"y": 0,
+			"z": 11,
+			"mass": 10,
+			"friction": 11,
+			"model": "pine",
+			"texture": "t_pine"
+		},
+		{
+			"use_phys": false,
+			"x": 7,
+			"y": 0,
+			"z": 10,
+			"mass": 10,
+			"friction": 11,
+			"model": "pine",
+			"texture": "t_pine"
+		},
+		{
+			"use_phys": false,
+			"x": 15,
+			"y": 0,
+			"z": 15,
+			"mass": 10,
+			"friction": 11,
+			"model": "pine",
+			"texture": "t_pine"
+		},
+		{
+			"use_phys": false,
+			"x": 10,
+			"y": 0,
+			"z": 12,
+			"mass": 10,
+			"friction": 11,
+			"model": "pine",
+			"texture": "t_pine"
+		},
+		{
+			"x": 3,
+			"y": 4,
+			"z": 3,
+			"mass": 10,
+			"friction": 11,
+			"model": "box",
+			"texture": "t_box"
+		},
+		{
+			"x": 1.5,
+			"y": 7,
+			"z": 3,
+			"mass": 10,
+			"friction": 11,
+			"model": "box",
+			"texture": "t_box"
+		},
+		{
+			"x": 3,
+			"y": 10,
+			"z": 3,
+			"mass": 10,
+			"friction": 11,
+			"model": "box",
+			"texture": "t_box"
+		},
+		{
+			"x": 3,
+			"y": 13,
+			"z": 3,
+			"mass": 10,
+			"friction": 11,
+			"model": "box",
+			"texture": "t_box"
+		},
+		{
+			"x": 3,
+			"y": 16,
+			"z": 3,
+			"mass": 10,
+			"friction": 11,
+			"model": "box",
+			"texture": "t_box"
+		},
+		{
+			"x": 3,
+			"y": 19,
+			"z": 3,
+			"mass": 10,
+			"friction": 11,
+			"model": "box",
+			"texture": "t_box"
+		},
+		{
+			"x": 3,
+			"y": 21,
+			"z": 3,
+			"mass": 10,
+			"friction": 11,
+			"model": "box",
+			"texture": "t_box"
+		},
+		{
+			"x": 3,
+			"y": 24,
+			"z": 3,
+			"mass": 10,
+			"friction": 11,
+			"model": "box",
+			"texture": "t_box"
+		}
+	]
+}

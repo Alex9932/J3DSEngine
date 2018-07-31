@@ -2,7 +2,9 @@ package alex9932.engine.physics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import org.ode4j.math.DVector3;
 import org.ode4j.math.DVector3C;
 import org.ode4j.ode.DBody;
 import org.ode4j.ode.DContact;
@@ -23,17 +25,17 @@ import org.ode4j.ode.OdeConfig;
 import org.ode4j.ode.OdeConstants;
 import org.ode4j.ode.OdeHelper;
 
-public class Physics {
+public class Physics implements DNearCallback{
 	private DWorld world;
 	private DSpace space;
+	private DVector3 windVector;
 	private List<Body> bodys = new ArrayList<Body>();
 	private DJointGroup contactGroup = OdeHelper.createJointGroup();
-	private DNearCallback nearCallback = new DNearCallback() {
-		@Override
-		public void call(Object data, DGeom geom0, DGeom geom1) {
-			nearCallBack(data, geom0, geom1);
-		}
-	};
+	
+	@Override
+	public void call(Object data, DGeom geom0, DGeom geom1) {
+		nearCallBack(data, geom0, geom1);
+	}
 
 	public Physics() {
 		System.out.println("[ODE] Starting up...");
@@ -46,17 +48,25 @@ public class Physics {
 		space = OdeHelper.createSimpleSpace();
 		world.setGravity(0, -9.8, 0);
 		world.setQuickStepNumIterations(32);
+		Random random = new Random();
+		double rand_x = 1 - (random.nextDouble()+random.nextDouble());
+		double rand_z = 1 - (random.nextDouble()+random.nextDouble());
+		windVector = new DVector3(rand_x, 0, rand_z);
+		System.out.println(windVector);
 	}
 	
 	public void update() {
 		final double step = 0.001;
-		OdeHelper.spaceCollide(space, 0, nearCallback);
+		OdeHelper.spaceCollide(space, 0, this);
 		world.quickStep(step);
 		contactGroup.empty();
 		
 		for (int i = 0; i < bodys.size(); i++) {
 			Body body = bodys.get(i);
 			DGeom geom = body.getGeom();
+			double wx = windVector.get0() * (1.0 / body.getBody().getMass().getMass());
+			double wz = windVector.get2() * (1.0 / body.getBody().getMass().getMass());
+			body.getBody().addForce(wx, 0, wz);
 			body.update();
 			
 			if(geom.getPosition().get1() <= -100){
@@ -170,7 +180,7 @@ public class Physics {
 		DTriMesh geom = OdeHelper.createTriMesh(space, data, new DTriCallback() {
 			@Override
 			public int call(DGeom arg0, DGeom arg1, int arg2) {
-				return 0;
+				return 1;
 			}
 		}, new DTriArrayCallback() {
 			@Override
@@ -179,19 +189,25 @@ public class Physics {
 		}, new DTriRayCallback() {
 			@Override
 			public int call(DGeom arg0, DGeom arg1, int arg2, double arg3, double arg4) {
-				return 0;
+				return 1;
 			}
 		});
 		
 		DBody body = OdeHelper.createBody(world);
 		DMass smass = OdeHelper.createMass();
-		smass.setTrimesh(-mass, geom);
+		System.out.println(mass);
+		smass.setTrimesh(mass, geom);
+		//smass.setMass(mass);
+		//smass.setTrimeshTotal(mass, geom);
+		//smass.setBox(mass, 10, 1, 10);
+		smass.setSphere(mass, 10);
 		body.setMass(smass);
 		geom.setBody(body);
 		body.setPosition(x, y, z);
 		body.setGravityMode(true);
 		Body bbody = new Body(material, geom, friction);
 		bodys.add(bbody);
+		System.out.println("Created!");
 		return bbody;
 	}
 	

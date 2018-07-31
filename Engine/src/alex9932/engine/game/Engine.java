@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.vector.Vector3f;
 
 import alex9932.engine.physics.Body;
 import alex9932.engine.physics.Material;
@@ -15,6 +16,7 @@ import alex9932.engine.render.Renderer;
 import alex9932.script.FileIO;
 import alex9932.script.ScriptsEngine;
 import alex9932.utils.FmlLoader;
+import alex9932.utils.Profiler;
 import alex9932.utils.Resource;
 import alex9932.utils.Timer;
 import alex9932.utils.gl.Vao;
@@ -31,12 +33,14 @@ public class Engine {
 	public IGame game;
 	private EventSystem eventsys;
 	private String level;
+	private Profiler profiler;
 	private boolean toLoad;
 	private boolean running = true;
 	
 	public Engine(IGame game) {
 		System.out.println("[Engine] Starting up...");
 		this.game = game;
+		this.profiler = new Profiler();
 		timer = new Timer(1024);
 		scene = new Scene();
 		Display.create();
@@ -56,10 +60,12 @@ public class Engine {
 		game.startup();
 		Display.getDisplay().getEventSystem().setGrabbed(true);
 		while (running) {
+			profiler.startSelection("timeupdate");
 			if(Display.isCloseRequested()){
 				running = false;
 			}
 			timer.updateTimer();
+			profiler.startSelection("globalupdates");
 			for (int i = 0; i < timer.elapsedTicks; ++i) {
 				renderer.getCamera().update();
 				game.update();
@@ -71,11 +77,14 @@ public class Engine {
 					}
 				}
 			}
+			profiler.startSelection("render");
 			renderer.render(scene);
 			
 			if(toLoad){
+				profiler.startSelection("levelload");
 				_loadLevel(level);
 			}
+			profiler.startSelection("NONE");
 		}
 		_shutdown();
 	}
@@ -108,6 +117,8 @@ public class Engine {
 		eventsys.sendSignal(Event.ON_LOAD_EVENT);
 		game.onStartLevelLoading(level);
 		scene.destroy();
+		physics.destroy();
+		physics = new Physics();
 		scene = null;
 		scene = new Scene();
 		JSONObject root = new JSONObject(FileIO.read(Resource.getLevel(level + "/entitys.json")));
@@ -131,6 +142,10 @@ public class Engine {
 			vao.put(new Vbo(0, 3, md.getVerts()));
 			vao.put(new Vbo(1, 2, md.getTextureCoord()));
 			vao.put(new Vbo(2, 3, md.getNormals()));
+			try {
+				vao.setIgnoreCulling(mdl.getBoolean("ignore_culling"));
+			} catch (Exception e) {
+			}
 			models.put(mdl.getString("name"), vao);
 		}
 
@@ -147,19 +162,28 @@ public class Engine {
 		game.onLevelLoaded(level);
 
 		System.out.println("[Engine] Spawning...");
-		Body body1 = physics.createTMeshBody(10000, 10, 0, 0, 0, loader.getVerts(), loader.getInds(), Material.METAL);
+		Body body1 = physics.createTMeshBody(1.0, 10, 0, 0, 0, loader.getVerts(), loader.getInds(), Material.METAL);
 		physics.setFixed(body1.getGeom());
 		GameObject obj = new GameObject(body1, ttexture, terrainvao);
 		scene.add(obj);
 		scene.setModels(models);
 		scene.setTextures(textures);
 		
+		System.out.println("[Engine] Spawning entitys...");
 		JSONArray array = root.getJSONArray("entitys");
 		
 		for (int i = 0; i < array.length(); i++) {
 			JSONObject entity = array.getJSONObject(i);
-			Body body2 = physics.createBoxBody(entity.getDouble("mass"), entity.getDouble("friction"), entity.getDouble("x"), entity.getDouble("y"), entity.getDouble("z"), 2, 2, 2, Material.METAL);
-			scene.add(new GameObject(body2, textures.get(entity.getString("texture")), models.get(entity.getString("model"))));
+			boolean usephys = true;
+			try {
+				usephys = entity.getBoolean("use_phys");
+			} catch (Exception e) {
+			}
+			Body body2 = null;
+			if(usephys){
+				body2 = physics.createBoxBody(entity.getDouble("mass"), entity.getDouble("friction"), entity.getDouble("x"), entity.getDouble("y"), entity.getDouble("z"), 2, 2, 2, Material.METAL);
+			}
+			scene.add(new GameObject(body2, textures.get(entity.getString("texture")), models.get(entity.getString("model")), new Vector3f((float)entity.getDouble("x"), (float)entity.getDouble("y"), (float)entity.getDouble("z"))));
 		}
 		
 		eventsys.sendSignal(Event.END_LOAD_LEVEL);

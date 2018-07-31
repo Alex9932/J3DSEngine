@@ -1,6 +1,7 @@
 package alex9932.engine.game;
 
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 
 import alex9932.engine.physics.Body;
 import alex9932.utils.MatMath;
@@ -21,7 +22,18 @@ public class GameObject {
 		this(body, texture, null, model);
 	}
 	
+	public GameObject(Body body, Texture texture, Vao model, Vector3f pos) {
+		this(body, texture, null, model, pos);
+	}
+
 	public GameObject(Body body, Texture texture, Texture specular, Vao vao) {
+		this(body, texture, specular, vao, new Vector3f());
+	}
+	
+	public GameObject(Body body, Texture texture, Texture specular, Vao vao, Vector3f pos) {
+		this.x = pos.x;
+		this.y = pos.y;
+		this.z = pos.z;
 		this.vao = vao;
 		this.body = body;
 		this.texture = texture;
@@ -32,9 +44,6 @@ public class GameObject {
 			this.z = (float)body.getGeom().getPosition().get2();
 			this.model_matrix = MatMath.createModelMatrixFromBody(body);
 		} else {
-			this.x = 0;
-			this.y = 1;
-			this.z = 0;
 			this.model_matrix = MatMath.createModelMatrix(x, y, z, 0, 0, 0, 1);
 		}
 	}

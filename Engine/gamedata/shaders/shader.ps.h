@@ -32,7 +32,7 @@ void main(void){
 	float objNearestLight = texture(shadowMap, shadowCoords.xy).r;
 	float lightFactor = 1.0;
 	if(shadowCoords.z > objNearestLight + 0.0003) {
-		lightFactor -= shadowCoords.w * objNearestLight * 0.4;
+		lightFactor -= shadowCoords.w * objNearestLight;
 	}
 
 	float specularMapFactor = texture(specularMap, pass_textureCoords).r;
@@ -46,7 +46,7 @@ void main(void){
 		float specularFactor = dot(directionToCam, reflectDirection);
 		specularFactor = pow(specularFactor, 2);
 		specularFactor = specularFactor * specularMapFactor;
-		diffuseLight += specularFactor * lightFactor;
+		diffuseLight += specularFactor;
 	}
 
 	out_colour = diffuseColour * diffuseLight * lightFactor;

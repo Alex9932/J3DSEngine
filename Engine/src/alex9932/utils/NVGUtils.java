@@ -55,4 +55,12 @@ public class NVGUtils {
 		NanoVG.nvgFontBlur(vg, 0);
 		drawString(text, font, x, y, size);
 	}
+
+	public static void begin(int w, int h) {
+		NanoVG.nvgBeginFrame(NVGUtils.getVg(), w, h, 1);
+	}
+
+	public static void end() {
+		NanoVG.nvgEndFrame(NVGUtils.getVg());
+	}
 }

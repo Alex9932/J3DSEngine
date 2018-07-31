@@ -18,6 +18,7 @@ import alex9932.engine.game.GameObject;
 import alex9932.engine.game.Scene;
 import alex9932.engine.render.gui.GuiRenderer;
 import alex9932.engine.render.gui.IGui;
+import alex9932.engine.render.pp.PostProcessing;
 import alex9932.script.FileIO;
 import alex9932.utils.IKeyListener;
 import alex9932.utils.Resource;
@@ -27,6 +28,7 @@ import alex9932.utils.gl.Shader;
 public class Renderer implements IKeyListener{
 	public static final int TYPE_MODEL_STATIC = 0;
 	public static final int TYPE_MODEL_ANIMATED = 1;
+	public static final boolean IS_DEBUG = true;
 	
 	private ICamera camera;
 	private Shader shader;
@@ -43,14 +45,16 @@ public class Renderer implements IKeyListener{
 		System.out.println("[Renderer] Starting up...");
 		Display.getDisplay().getEventSystem().addKeyListener(this);
 		
-		GL11.glEnable(GL43.GL_DEBUG_OUTPUT);
-		GL11.glEnable(GL43.GL_DEBUG_OUTPUT_SYNCHRONOUS);
-		GL43.glDebugMessageCallback(new GLDebugMessageCallbackI() {
-			@Override
-			public void invoke(int source, int type, int id, int severity, int length, long message, long userParam) {
-				System.out.println("[OPENGL] " + MemoryUtil.memUTF8(MemoryUtil.memByteBuffer(message, length)));
-			}
-		}, 0);
+		if(IS_DEBUG) {
+			GL11.glEnable(GL43.GL_DEBUG_OUTPUT);
+			GL11.glEnable(GL43.GL_DEBUG_OUTPUT_SYNCHRONOUS);
+			GL43.glDebugMessageCallback(new GLDebugMessageCallbackI() {
+				@Override
+				public void invoke(int source, int type, int id, int severity, int length, long message, long userParam) {
+					System.out.println("[OPENGL] " + MemoryUtil.memUTF8(MemoryUtil.memByteBuffer(message, length)));
+				}
+			}, 0);
+		}
 		
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -155,7 +159,11 @@ public class Renderer implements IKeyListener{
 			}else{
 				shader.loadBoolean("hasSpecular", false);
 			}
+			if(object.getVao().isIgnoreCulling()){
+				GL11.glDisable(GL11.GL_CULL_FACE);
+			}
 			object.getVao().bind();
+			
 			if(object instanceof AnimatedGameObject){
 				shader.loadInt("model_type", TYPE_MODEL_ANIMATED);
 				AnimatedGameObject obj = (AnimatedGameObject)object;
@@ -184,6 +192,10 @@ public class Renderer implements IKeyListener{
 				GL20.glDisableVertexAttribArray(1);
 				GL20.glDisableVertexAttribArray(2);
 				object.getVao().unbind();
+			}
+			if(object.getVao().isIgnoreCulling()){
+				GL11.glEnable(GL11.GL_CULL_FACE);
+				GL11.glCullFace(GL11.GL_BACK);
 			}
 		}
 

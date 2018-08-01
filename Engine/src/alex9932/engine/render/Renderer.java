@@ -34,7 +34,8 @@ public class Renderer implements IKeyListener{
 	private Shader shader;
 	private float DSR_RATIO = 1;
 	private boolean isWireframe;
-	private Vector3f LIGHT_DIR = new Vector3f(1, -1, 1);
+	private float angle = -1.0f;
+	private Vector3f LIGHT_DIR = new Vector3f(angle, -1, 1);
 	private ShadowMapRenderer shadowRenderer;
 	private Fbo fbo;
 	private Fbo msfbo;
@@ -202,6 +203,10 @@ public class Renderer implements IKeyListener{
 		shader.stop();
 		msfbo.unbind();
 		msfbo.resolveToFbo(fbo);
+		
+		angle += 0.0001f;
+		LIGHT_DIR = new Vector3f(angle, -1, 1);
+		
 		GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
 		PostProcessing.doPostProcessing(fbo.getRenderTexture());
 		if(isWireframe) {

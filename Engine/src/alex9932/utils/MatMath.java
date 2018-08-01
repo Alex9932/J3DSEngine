@@ -1,7 +1,9 @@
 package alex9932.utils;
 
+import org.json.JSONArray;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.ode4j.math.DMatrix3;
 import org.ode4j.math.DMatrix3C;
 import org.ode4j.math.DVector3C;
 
@@ -83,6 +85,20 @@ public class MatMath {
 		mat.m32 = -((far + near) / (far - near));
 		mat.m33 = 1;
 		
+		return mat;
+	}
+
+	public static DMatrix3C createDMat3d(JSONArray jsonArray) {
+		double a = jsonArray.getDouble(0);
+		double b = jsonArray.getDouble(1);
+		double c = jsonArray.getDouble(2);
+		double d = jsonArray.getDouble(4);
+		double e = jsonArray.getDouble(5);
+		double f = jsonArray.getDouble(6);
+		double g = jsonArray.getDouble(8);
+		double h = jsonArray.getDouble(9);
+		double i = jsonArray.getDouble(10);
+		DMatrix3C mat = new DMatrix3(a, b, c, d, e, f, g, h, i);
 		return mat;
 	}
 }

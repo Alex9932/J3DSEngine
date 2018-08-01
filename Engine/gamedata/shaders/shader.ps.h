@@ -1,6 +1,9 @@
 #version 330 core
 #extension GL_EXT_gpu_shader4 : enable
 
+#define PIXEL (1.0 / 8190.0)
+#define SMOOTH_SHADOW false
+
 const vec2 lightBias = vec2(0.7, 0.6);//just indicates the balance between diffuse and ambient lighting
 
 in vec2 pass_textureCoords;
@@ -21,6 +24,26 @@ uniform bool hasSpecular;
 const int pcfCount = 4;
 const float totalTexels = ((pcfCount * 2.0) + 1.0) * ((pcfCount * 2.0) + 1.0);
 
+float calcShadow() {
+	float objNearestLight;
+
+	if (SMOOTH_SHADOW) {
+		int s = 5;
+		int e = 0;
+		for (int i = -s; i <= s; i++) {
+			for (int k = -s; k <= s; k++) {
+				objNearestLight += texture(shadowMap, shadowCoords.xy + vec2(i * PIXEL, k * PIXEL)).r;
+			}
+			e++;
+		}
+		objNearestLight /= (e * e);
+	} else {
+		objNearestLight = texture(shadowMap, shadowCoords.xy).r;
+	}
+
+	return objNearestLight;
+}
+
 void main(void){
 	vec4 diffuseColour = texture(diffuseMap, pass_textureCoords);
 
@@ -29,10 +52,11 @@ void main(void){
 	}
 	////////////////////////////////////////////////////////////////////////////
 
-	float objNearestLight = texture(shadowMap, shadowCoords.xy).r;
+
+	float objNearestLight = calcShadow();
 	float lightFactor = 1.0;
 	if(shadowCoords.z > objNearestLight + 0.0003) {
-		lightFactor -= shadowCoords.w * objNearestLight;
+		lightFactor -= shadowCoords.w * objNearestLight * 0.5;
 	}
 
 	float specularMapFactor = texture(specularMap, pass_textureCoords).r;

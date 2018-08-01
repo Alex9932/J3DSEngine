@@ -25,7 +25,7 @@ public class AnimatedModelLoader {
 	 */
 	public static AnimatedModel loadEntity(String modelFile, String textureFile) {
 		AnimatedModelData entityData = ColladaLoader.loadColladaModel(new File(modelFile), AnimationConstants.MAX_WEIGHTS);
-		Vao model = createVao(entityData.getMeshData());
+		Vao model = createVao(entityData.getMeshData(), modelFile);
 		Texture texture = loadTexture(textureFile);
 		SkeletonData skeletonData = entityData.getJointsData();
 		Joint headJoint = createJoints(skeletonData.headJoint);
@@ -66,10 +66,11 @@ public class AnimatedModelLoader {
 	 * @param data
 	 *            - all the data about the mesh that needs to be stored in the
 	 *            VAO.
+	 * @param file 
 	 * @return The VAO containing all the mesh data for the model.
 	 */
-	private static Vao createVao(MeshData data) {
-		Vao vao = new Vao(); //Vao.create();
+	private static Vao createVao(MeshData data, String file) {
+		Vao vao = new Vao(file); //Vao.create();
 		vao.bind();
 		vao.setIndices(data.getIndices());               //vao.createIndexBuffer(data.getIndices());
 		vao.put(new Vbo(0, 3, data.getVertices()));      //vao.createAttribute(0, data.getVertices(), 3);

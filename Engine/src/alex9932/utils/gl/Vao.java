@@ -11,8 +11,10 @@ public class Vao {
 	private ArrayList<Vbo> vbos = new ArrayList<Vbo>();
 	private IntBuffer indices;
 	private boolean ignore_culling;
+	private String path;
 
-	public Vao() {
+	public Vao(String path) {
+		this.path = path;
 		this.id = GL30.glGenVertexArrays();
 	}
 	
@@ -54,5 +56,9 @@ public class Vao {
 	
 	public boolean isIgnoreCulling() {
 		return ignore_culling;
+	}
+
+	public String getPath() {
+		return path;
 	}
 }

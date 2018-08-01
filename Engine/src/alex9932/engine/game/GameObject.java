@@ -17,6 +17,7 @@ public class GameObject {
 	private float x;
 	private float y;
 	private float z;
+	private boolean isStatic = true;
 	
 	public GameObject(Body body, Texture texture, Vao model) {
 		this(body, texture, null, model);
@@ -51,6 +52,9 @@ public class GameObject {
 	public void update() {
 		if(body != null) {
 			this.model_matrix = MatMath.createModelMatrixFromBody(body);
+			this.x = (float)body.getGeom().getPosition().get0();
+			this.y = (float)body.getGeom().getPosition().get1();
+			this.z = (float)body.getGeom().getPosition().get2();
 		}else{
 			this.model_matrix = MatMath.createModelMatrix(x, y, z, 0, 0, 0, 1);
 		}
@@ -77,7 +81,11 @@ public class GameObject {
 	}
 	
 	public Matrix4f getModelMatrix() {
-		return model_matrix;
+		if(body != null) {
+			return MatMath.createModelMatrixFromBody(body);
+		} else {
+			return model_matrix;
+		}
 	}
 	
 	public Texture getTexture() {
@@ -86,5 +94,13 @@ public class GameObject {
 
 	public Texture getSpecular() {
 		return specular;
+	}
+
+	public void setStatic(boolean b) {
+		this.isStatic  = b;
+	}
+	
+	public boolean isStatic() {
+		return this.isStatic;
 	}
 }

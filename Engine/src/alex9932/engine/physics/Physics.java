@@ -136,6 +136,7 @@ public class Physics implements DNearCallback{
 		body.setMass(smass);
 		geom.setBody(body);
 		body.setPosition(x, y, z);
+		geom.setPosition(x, y, z);
 		body.setGravityMode(true);
 		Body bbody = new Body(material, geom, friction);
 		bodys.add(bbody);
@@ -151,6 +152,7 @@ public class Physics implements DNearCallback{
 		body.setMass(smass);
 		geom.setBody(body);
 		body.setPosition(x, y, z);
+		geom.setPosition(x, y, z);
 		body.setGravityMode(true);
 		Body bbody = new Body(material, geom, friction);
 		bodys.add(bbody);
@@ -166,6 +168,7 @@ public class Physics implements DNearCallback{
 		body.setMass(smass);
 		geom.setBody(body);
 		body.setPosition(x, y, z);
+		geom.setPosition(x, y, z);
 		body.setGravityMode(true);
 		Body bbody = new Body(material, geom, friction);
 		bodys.add(bbody);
@@ -196,14 +199,15 @@ public class Physics implements DNearCallback{
 		DBody body = OdeHelper.createBody(world);
 		DMass smass = OdeHelper.createMass();
 		System.out.println(mass);
-		smass.setTrimesh(mass, geom);
-		//smass.setMass(mass);
+		smass.setMass(mass);
+		//smass.setTrimesh(1, geom);
 		//smass.setTrimeshTotal(mass, geom);
 		//smass.setBox(mass, 10, 1, 10);
 		smass.setSphere(mass, 10);
 		body.setMass(smass);
 		geom.setBody(body);
 		body.setPosition(x, y, z);
+		geom.setPosition(x, y, z);
 		body.setGravityMode(true);
 		Body bbody = new Body(material, geom, friction);
 		bodys.add(bbody);

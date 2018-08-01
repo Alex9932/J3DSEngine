@@ -17,4 +17,5 @@ public interface ICamera {
 	public float getFov();
 	public void update();
 	public void updateMouse();
+	public void setPositionAXAY(double x, double y, double z, double ax, double ay);
 }

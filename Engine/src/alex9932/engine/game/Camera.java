@@ -141,4 +141,13 @@ public class Camera implements ICamera {
 	public float getAngleY() {
 		return angley;
 	}
+
+	@Override
+	public void setPositionAXAY(double x, double y, double z, double ax, double ay) {
+		this.x = (float)x;
+		this.y = (float)y;
+		this.z = (float)z;
+		this.anglex = (float)ax;
+		this.angley = (float)ay;
+	}
 }

@@ -10,6 +10,7 @@ public class Resource {
 	private static String TEXTURES_PATH = GAMEDATA + "textures/";
 	private static String LEVELS_PATH = GAMEDATA + "levels/";
 	private static String FONTS_PATH = GAMEDATA + "fonts/";
+	private static String SAVES_PATH = "saves/";
 
 	public static String getModel(String file) {
 		return MODELS_PATH + file;
@@ -41,5 +42,9 @@ public class Resource {
 
 	public static String getFont(String file) {
 		return TEXTURES_PATH + FONTS_PATH + file;
+	}
+
+	public static String getSave(String file) {
+		return SAVES_PATH + file + "/";
 	}
 }

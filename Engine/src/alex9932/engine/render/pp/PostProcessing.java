@@ -20,7 +20,7 @@ public class PostProcessing {
 	private static Bright bright = new Bright((int)Display.getWidth(), (int)Display.getHeight());
 
 	public static void init(){
-		quad = new Vao();
+		quad = new Vao(null);
 		quad.put(new Vbo(0, 2, POSITIONS));
 	}
 	

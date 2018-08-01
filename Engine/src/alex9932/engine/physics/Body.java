@@ -44,4 +44,8 @@ public class Body {
 	public Source getSource() {
 		return source;
 	}
+
+	public int getType() {
+		return geom.getClassID();
+	}
 }

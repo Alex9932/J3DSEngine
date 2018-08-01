@@ -17,6 +17,8 @@ public class Texture {
 	private int width;
 	private int height;
 
+	private String path;
+
 	public Texture(int tex){
 		this.id = tex;
 	}
@@ -35,6 +37,7 @@ public class Texture {
 	
 	public Texture(String path, ITextureDecoder decoder, int glMode) {
 		System.out.print("[Texture] Loading texture: " + path + " ...  ");
+		this.path = path;
 		TextureData data = decodeTextureFile(path, decoder);
 		this.width = data.width;
 		this.height = data.height;
@@ -142,5 +145,9 @@ public class Texture {
 
 	public void delete() {
 		GL11.glDeleteTextures(id);
+	}
+
+	public String getPath() {
+		return path;
 	}
 }

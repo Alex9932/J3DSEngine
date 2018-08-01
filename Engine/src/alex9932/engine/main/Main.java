@@ -1,5 +1,7 @@
 package alex9932.engine.main;
 
+import java.io.IOException;
+
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.Display;
 
@@ -8,9 +10,7 @@ import alex9932.engine.game.GameObject;
 import alex9932.engine.game.IGameImpl;
 import alex9932.engine.physics.Material;
 import alex9932.utils.FmlLoader;
-import alex9932.utils.FmlWriter;
 import alex9932.utils.IKeyListener;
-import alex9932.utils.ObjModel;
 import alex9932.utils.Resource;
 import alex9932.utils.gl.Vao;
 import alex9932.utils.gl.Vbo;
@@ -27,12 +27,12 @@ public class Main extends IGameImpl implements IKeyListener{
 	public void startup() throws Exception {
 		Display.getDisplay().getEventSystem().addKeyListener(this);
 		
-		ObjModel l = new ObjModel(Resource.getModel("untitled.obj"));
-		new FmlWriter(Resource.getModel("untitled.fml"), l.getVerts(), l.getNormalsArray(), l.getTangentsArray(), l.getTextureCoord(), l.getInds());
+		//ObjModel l = new ObjModel(Resource.getModel("untitled.obj"));
+		//new FmlWriter(Resource.getModel("untitled.fml"), l.getVerts(), l.getNormalsArray(), l.getTangentsArray(), l.getTextureCoord(), l.getInds());
 		
 		
 		FmlLoader mdl = new FmlLoader(Resource.getModel("sphere.fml"));
-		vao = new Vao();
+		vao = new Vao(Resource.getModel("sphere.fml"));
 		vao.setIndices(mdl.getInds());
 		vao.put(new Vbo(0, 3, mdl.getVerts()));
 		vao.put(new Vbo(1, 2, mdl.getTextureCoord()));
@@ -83,6 +83,20 @@ public class Main extends IGameImpl implements IKeyListener{
 		}
 		if(key == GLFW.GLFW_KEY_F10) {
 			engine.loadLevel("bm_test");
+		}
+		if(key == GLFW.GLFW_KEY_F9) {
+			try {
+				engine.save("test");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		if(key == GLFW.GLFW_KEY_F8) {
+			try {
+				engine.load("test");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

@@ -1,0 +1,90 @@
+{
+	"models": [
+		{
+			"name": "box",
+			"file": "box.fml"
+		}
+	],
+	
+	"textures": [
+		{
+			"name": "t_box",
+			"file": "default.png"
+		}
+	],
+	
+	"entitys": [
+		{
+			"x": 3,
+			"y": 4,
+			"z": 3,
+			"mass": 10,
+			"friction": 11,
+			"model": "box",
+			"texture": "t_box"
+		},
+		{
+			"x": 1.5,
+			"y": 7,
+			"z": 3,
+			"mass": 10,
+			"friction": 11,
+			"model": "box",
+			"texture": "t_box"
+		},
+		{
+			"x": 3,
+			"y": 10,
+			"z": 3,
+			"mass": 10,
+			"friction": 11,
+			"model": "box",
+			"texture": "t_box"
+		},
+		{
+			"x": 3,
+			"y": 13,
+			"z": 3,
+			"mass": 10,
+			"friction": 11,
+			"model": "box",
+			"texture": "t_box"
+		},
+		{
+			"x": 3,
+			"y": 16,
+			"z": 3,
+			"mass": 10,
+			"friction": 11,
+			"model": "box",
+			"texture": "t_box"
+		},
+		{
+			"x": 3,
+			"y": 19,
+			"z": 3,
+			"mass": 10,
+			"friction": 11,
+			"model": "box",
+			"texture": "t_box"
+		},
+		{
+			"x": 3,
+			"y": 21,
+			"z": 3,
+			"mass": 10,
+			"friction": 11,
+			"model": "box",
+			"texture": "t_box"
+		},
+		{
+			"x": 3,
+			"y": 24,
+			"z": 3,
+			"mass": 10,
+			"friction": 11,
+			"model": "box",
+			"texture": "t_box"
+		}
+	]
+}

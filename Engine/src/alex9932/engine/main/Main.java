@@ -16,9 +16,10 @@ import alex9932.utils.gl.Vao;
 import alex9932.utils.gl.Vbo;
 import alex9932.utils.gl.texture.Texture;
 import alex9932.utils.sound.SoundSystem;
+import alex9932.utils.sound.Source;
 
 public class Main extends IGameImpl implements IKeyListener{
-	private static Engine engine;
+	public static Engine engine;
 	private Vao vao;
 	private Texture texture;
 	private Texture specular;
@@ -51,8 +52,12 @@ public class Main extends IGameImpl implements IKeyListener{
 		object.doAnimation(animation);
 		engine.scene.add(object);**/
 		engine.renderer.renderGui(new Gui());
-		SoundSystem.createSource(SoundSystem.getSoundBuffer(Resource.getSound("ambient/forest.ogg")), 0, 0, 0).play();
-		SoundSystem.createSource(SoundSystem.getSoundBuffer(Resource.getSound("ambient/wind.ogg")), 0, 0, 0).play();
+		Source s0 = SoundSystem.createSource(SoundSystem.getSoundBuffer(Resource.getSound("ambient/forest.ogg")), 0, 0, 0);
+		Source s1 = SoundSystem.createSource(SoundSystem.getSoundBuffer(Resource.getSound("ambient/wind.ogg")), 0, 0, 0);
+		s0.repeat(true);
+		s1.repeat(true);
+		s0.play();
+		s1.play();
 	}
 	
 	public static void main(String[] args) throws Exception {

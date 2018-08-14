@@ -32,7 +32,6 @@ public class Renderer implements IKeyListener{
 	
 	private ICamera camera;
 	private Shader shader;
-	private float DSR_RATIO = 1;
 	private boolean isWireframe;
 	private float angle = -1.0f;
 	private Vector3f LIGHT_DIR = new Vector3f(angle, -1, 1);
@@ -41,6 +40,7 @@ public class Renderer implements IKeyListener{
 	private Fbo msfbo;
 	private GuiRenderer guirenderer;
 	private IGui gui = null;
+	public GBuffer gbuffer;
 	
 	public Renderer() {
 		System.out.println("[Renderer] Starting up...");
@@ -76,6 +76,9 @@ public class Renderer implements IKeyListener{
 		shader = new Shader(Resource.getShader("shader.vs.h"), Resource.getShader("shader.ps.h")) {
 			@Override
 			public void bindAttribs() {
+				this.bindFragOutput(0, "out_color");
+				this.bindFragOutput(1, "out_normal");
+				this.bindFragOutput(2, "out_specular");
 				this.bindAttribute(0, "in_position");
 				this.bindAttribute(1, "in_textureCoords");
 				this.bindAttribute(2, "in_normal");
@@ -105,8 +108,9 @@ public class Renderer implements IKeyListener{
 		};
 		shadowRenderer = new ShadowMapRenderer(camera);
 
-		fbo = new Fbo(Display.getDisplay(), (int)(1280.0f * DSR_RATIO), (int)(720.0f * DSR_RATIO));
-		msfbo = new Fbo(Display.getDisplay(), 1280, 720, Fbo.FBO_MULTISAMPLED, 4);
+		fbo = new Fbo(Display.getDisplay(), 1280, 720);
+		msfbo = new Fbo(Display.getDisplay(), 1280, 720, Fbo.FBO_MULTISAMPLED, 4, 2);
+		gbuffer = new GBuffer(1280, 720);
 		//GL11.glLineWidth(5);
 		PostProcessing.init();
 		guirenderer = new GuiRenderer();
@@ -117,7 +121,8 @@ public class Renderer implements IKeyListener{
 
 		shadowRenderer.render(scene, LIGHT_DIR);
 		
-		msfbo.bind();
+		//msfbo.bind();
+		gbuffer.bind();
 
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		GL11.glClearColor(0.11f, 0.11f, 0.11f, 1);
@@ -201,14 +206,15 @@ public class Renderer implements IKeyListener{
 		}
 
 		shader.stop();
-		msfbo.unbind();
-		msfbo.resolveToFbo(fbo);
+		//msfbo.unbind();
+		//msfbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, fbo);
+		gbuffer.unbind();
 		
 		angle += 0.0001f;
 		LIGHT_DIR = new Vector3f(angle, -1, 1);
 		
 		GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
-		PostProcessing.doPostProcessing(fbo.getRenderTexture());
+		PostProcessing.doPostProcessing(LIGHT_DIR, camera.getProjection(), gbuffer);
 		if(isWireframe) {
 			GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
 		}

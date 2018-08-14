@@ -4,7 +4,10 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 
+import alex9932.engine.render.GBuffer;
 import alex9932.utils.gl.Vao;
 import alex9932.utils.gl.Vbo;
 
@@ -18,18 +21,26 @@ public class PostProcessing {
 	private static HorizontalBlur hblur = new HorizontalBlur(1280/4, 720/4);
 	private static Combiner combiner = new Combiner((int)Display.getWidth(), (int)Display.getHeight());
 	private static Bright bright = new Bright((int)Display.getWidth(), (int)Display.getHeight());
+	private static SSAO ssao = new SSAO((int)Display.getWidth(), (int)Display.getHeight());
+	private static Lighting lighting = new Lighting((int)Display.getWidth(), (int)Display.getHeight());
 
 	public static void init(){
 		quad = new Vao(null);
 		quad.put(new Vbo(0, 2, POSITIONS));
 	}
 	
-	public static void doPostProcessing(int colourTexture){
+	public static void doPostProcessing(Vector3f lightDirection, Matrix4f proj, GBuffer gbuffer){
 		start();
-		bright.render(colourTexture);
+		ssao.render(proj, gbuffer);
+		
+		//Lighting
+		lighting.render(gbuffer, lightDirection);
+		
+		bright.render(lighting.getOutputTexture());
 		vblur.render(bright.getOutputTexture());
 		hblur.render(vblur.getOutputTexture());
-		combiner.render(hblur.getOutputTexture(), colourTexture);
+		combiner.render(hblur.getOutputTexture(), lighting.getOutputTexture());
+		//contrast.render(ssao.getOutputTexture());
 		contrast.render(combiner.getOutputTexture());
 		//contrast.render(hblur.getOutputTexture());
 		end();

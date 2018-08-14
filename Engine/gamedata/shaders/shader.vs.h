@@ -15,6 +15,7 @@ in vec3 in_weights;
 out vec2 pass_textureCoords;
 out vec3 pass_normal;
 out vec3 pass_pos;
+out vec3 outpos;
 out vec4 shadowCoords;
 
 uniform mat4 proj;
@@ -40,10 +41,12 @@ void main(void){
 			vec4 worldNormal = jointTransform * vec4(in_normal, 0.0);
 			totalNormal += worldNormal * in_weights[i];
 		}
+		outpos = (view * model * totalLocalPos).xyz;
 		gl_Position = mvp * totalLocalPos;
 		pass_pos = (model * totalLocalPos).xyz;
 		pass_normal = totalNormal.xyz;
 	} else if(model_type == TYPE_MODEL_STATIC) {
+		outpos = (view * model * vec4(in_position, 1)).xyz;
 		gl_Position = mvp * vec4(in_position, 1);
 		pass_pos = (model * vec4(in_position, 1)).xyz;
 		pass_normal = (model * vec4(in_normal, 0)).xyz;

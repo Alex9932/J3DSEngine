@@ -20,6 +20,8 @@ public class Gui implements IGui {
 	public void render(Shader shader) {
 		shader.loadInt("has_texture", 1);
 		texture.connectToAndBind(0);
+		//GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		//GL11.glBindTexture(GL11.GL_TEXTURE_2D, Main.engine.renderer.gbuffer.getPositions());
 		GL11.glColor3f(1, 1, 1);
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glTexCoord2f(0, 1);

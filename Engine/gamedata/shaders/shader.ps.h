@@ -4,14 +4,15 @@
 #define PIXEL (1.0 / 8190.0)
 #define SMOOTH_SHADOW false
 
-const vec2 lightBias = vec2(0.7, 0.6);//just indicates the balance between diffuse and ambient lighting
-
 in vec2 pass_textureCoords;
 in vec3 pass_normal;
 in vec3 pass_pos;
 in vec4 shadowCoords;
+in vec3 outpos;
 
-out vec4 out_colour;
+out vec4 out_color;
+out vec4 out_normal;
+out vec4 out_specular;
 
 uniform sampler2D diffuseMap;
 uniform sampler2D shadowMap;
@@ -59,7 +60,7 @@ void main(void){
 		lightFactor -= shadowCoords.w * objNearestLight * 0.5;
 	}
 
-	float specularMapFactor = texture(specularMap, pass_textureCoords).r;
+	/**float specularMapFactor = texture(specularMap, pass_textureCoords).r;
 
 	vec3 unitNormal = normalize(pass_normal);
 	float diffuseLight = (max(dot(-lightDirection, unitNormal), 0.0) * lightBias.x + lightBias.y);
@@ -71,8 +72,23 @@ void main(void){
 		specularFactor = pow(specularFactor, 2);
 		specularFactor = specularFactor * specularMapFactor;
 		diffuseLight += specularFactor;
+	}**/
+
+	vec3 unitNormal = normalize(pass_normal);
+	float specularMapFactor = texture(specularMap, pass_textureCoords).r;
+	float specularFactor;
+	if(hasSpecular) {
+		vec3 directionToCam = normalize(camPos - pass_pos);
+		vec3 reflectDirection = normalize(reflect(lightDirection, unitNormal));
+		specularFactor = dot(directionToCam, reflectDirection);
+		specularFactor = pow(specularFactor, 2);
+		specularFactor = specularFactor;// * specularMapFactor;
 	}
 
-	out_colour = diffuseColour * diffuseLight * lightFactor;
+	out_color = diffuseColour;// * diffuseLight * lightFactor;
+	out_normal = (vec4(unitNormal, 1) + 1) / 2;
+	out_normal.a = lightFactor;
+	out_specular = vec4(specularFactor, specularFactor, specularFactor, 1);
+	//out_shadow = vec4(lightFactor, lightFactor, lightFactor, 1);
 	
 }

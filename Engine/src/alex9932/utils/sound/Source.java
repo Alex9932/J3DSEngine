@@ -89,8 +89,7 @@ public class Source {
 	}
 
 	public void repeat(boolean repeat) {
-		AL10.alSourcei(sourceId, AL10.AL_LOOPING, repeat ? AL10.AL_TRUE
-				: AL10.AL_FALSE);
+		AL10.alSourcei(sourceId, AL10.AL_LOOPING, repeat ? AL10.AL_TRUE : AL10.AL_FALSE);
 	}
 
 	public void cleanup() {

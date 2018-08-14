@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector2f;
@@ -54,6 +55,10 @@ public abstract class Shader {
 	
 	public void createUniformLocation(String uniformName){
 		uniforms.put(uniformName, GL20.glGetUniformLocation(this.program, uniformName));
+	}
+	
+	public void bindFragOutput(int attachment, String uniformName){
+		GL30.glBindFragDataLocation(program, attachment, uniformName);
 	}
 	
 	public void loadBoolean(String uniformName, boolean value){

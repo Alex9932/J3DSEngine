@@ -41,6 +41,7 @@ public class Renderer implements IKeyListener{
 	private GuiRenderer guirenderer;
 	private IGui gui = null;
 	public GBuffer gbuffer;
+	private Skybox skybox;
 	
 	public Renderer() {
 		System.out.println("[Renderer] Starting up...");
@@ -79,6 +80,7 @@ public class Renderer implements IKeyListener{
 				this.bindFragOutput(0, "out_color");
 				this.bindFragOutput(1, "out_normal");
 				this.bindFragOutput(2, "out_specular");
+				this.bindFragOutput(3, "out_position");
 				this.bindAttribute(0, "in_position");
 				this.bindAttribute(1, "in_textureCoords");
 				this.bindAttribute(2, "in_normal");
@@ -114,6 +116,7 @@ public class Renderer implements IKeyListener{
 		//GL11.glLineWidth(5);
 		PostProcessing.init();
 		guirenderer = new GuiRenderer();
+		skybox = new Skybox(null);
 	}
 	
 	public void render(Scene scene) {
@@ -123,8 +126,11 @@ public class Renderer implements IKeyListener{
 		
 		//msfbo.bind();
 		gbuffer.bind();
-
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		
+		if(isWireframe) {
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+		}
+		GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
 		GL11.glClearColor(0.11f, 0.11f, 0.11f, 1);
 		
 		if(scene == null){
@@ -139,6 +145,9 @@ public class Renderer implements IKeyListener{
 			Display.update();
 			return;
 		}
+		
+		skybox.render(camera);
+		
 		shader.start();
 		shader.loadMatrix4f("proj", camera.getProjection());
 		shader.loadMatrix4f("view", camera.getView());

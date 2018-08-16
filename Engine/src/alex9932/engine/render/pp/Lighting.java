@@ -32,10 +32,11 @@ public class Lighting extends Shader{
 		this.createUniformLocation("diffuse");
 		this.createUniformLocation("normals");
 		this.createUniformLocation("specular");
+		this.createUniformLocation("ssao");
 		this.createUniformLocation("lightDirection");
 	}
 
-	public void render(GBuffer gbuffer, Vector3f lightDirection) {
+	public void render(GBuffer gbuffer, int ssao, Vector3f lightDirection) {
 		start();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, gbuffer.getDiffuse());
@@ -43,9 +44,12 @@ public class Lighting extends Shader{
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, gbuffer.getNormals());
 		GL13.glActiveTexture(GL13.GL_TEXTURE2);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, gbuffer.getSpecular());
+		GL13.glActiveTexture(GL13.GL_TEXTURE3);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, ssao);
 		loadInt("diffuse", 0);
 		loadInt("normals", 1);
 		loadInt("specular", 2);
+		loadInt("ssao", 3);
 		loadVector("lightDirection", lightDirection);
 		renderer.renderQuad();
 		stop();

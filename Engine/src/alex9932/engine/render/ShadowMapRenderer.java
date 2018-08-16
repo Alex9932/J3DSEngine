@@ -29,7 +29,6 @@ public class ShadowMapRenderer {
 	}
 
 	public void render(Scene scene, Vector3f lightDirection) {
-		//GL.disableCullFace();
 		GL.cullFace(GL.GL_FRONT);
 		shadowBox.update();
 		prepare(lightDirection, shadowBox);
@@ -75,7 +74,6 @@ public class ShadowMapRenderer {
 		GL20.glDisableVertexAttribArray(0);
 		GL30.glBindVertexArray(0);
 
-		GL.enableCullFace();
 		GL.cullFace(GL.GL_BACK);
 		finish();
 	}

@@ -17,8 +17,8 @@ public class PostProcessing {
 	private static Vao quad;
 
 	private static Contrast contrast = new Contrast();
-	private static VerticalBlur vblur = new VerticalBlur(1280/4, 720/4);
-	private static HorizontalBlur hblur = new HorizontalBlur(1280/4, 720/4);
+	private static VerticalBlur vblur = new VerticalBlur(1280, 720);
+	private static HorizontalBlur hblur = new HorizontalBlur(1280, 720);
 	private static Combiner combiner = new Combiner((int)Display.getWidth(), (int)Display.getHeight());
 	private static Bright bright = new Bright((int)Display.getWidth(), (int)Display.getHeight());
 	private static SSAO ssao = new SSAO((int)Display.getWidth(), (int)Display.getHeight());
@@ -34,7 +34,7 @@ public class PostProcessing {
 		ssao.render(proj, gbuffer);
 		
 		//Lighting
-		lighting.render(gbuffer, lightDirection);
+		lighting.render(gbuffer, ssao.getOutputTexture(), lightDirection);
 		
 		bright.render(lighting.getOutputTexture());
 		vblur.render(bright.getOutputTexture());

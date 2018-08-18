@@ -21,7 +21,7 @@ public class Gui implements IGui {
 		shader.loadInt("has_texture", 1);
 		texture.connectToAndBind(0);
 		//GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		//GL11.glBindTexture(GL11.GL_TEXTURE_2D, Main.engine.renderer.gbuffer.getPositions());
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, Main.engine.renderer.gbuffer.getPositions());
 		GL11.glColor3f(1, 1, 1);
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glTexCoord2f(0, 1);
@@ -40,5 +40,17 @@ public class Gui implements IGui {
 		NVGUtils.color(1, 1, 1, 1);
 		NVGUtils.drawString("String", "font", 100, 100, 25);
 		NVGUtils.end();
+	}
+
+	@Override
+	public void show() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
+		
 	}
 }

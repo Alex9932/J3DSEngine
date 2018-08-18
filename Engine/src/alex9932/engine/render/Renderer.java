@@ -134,6 +134,7 @@ public class Renderer implements IKeyListener{
 		GL11.glClearColor(0.11f, 0.11f, 0.11f, 1);
 		
 		if(scene == null){
+			skybox.render(camera);
 			if(gui != null) {
 				GL11.glDisable(GL11.GL_CULL_FACE);
 				GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -145,8 +146,6 @@ public class Renderer implements IKeyListener{
 			Display.update();
 			return;
 		}
-		
-		skybox.render(camera);
 		
 		shader.start();
 		shader.loadMatrix4f("proj", camera.getProjection());
@@ -241,7 +240,11 @@ public class Renderer implements IKeyListener{
 	}
 
 	public void renderGui(IGui gui) {
+		if(this.gui != null) {
+			this.gui.hide();
+		}
 		this.gui = gui;
+		this.gui.show();
 	}
 
 	public void toggleWireframe() {

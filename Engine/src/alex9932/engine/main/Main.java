@@ -40,6 +40,7 @@ public class Main extends IGameImpl implements IKeyListener{
 		vao.put(new Vbo(2, 3, mdl.getNormals()));
 		texture = new Texture(Resource.getTexture("default.png"));
 		specular = new Texture(Resource.getTexture("specular.png"));
+		engine.renderer.renderGui(new GuiMainMenu());
 	}
 	
 	@Override

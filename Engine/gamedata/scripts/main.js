@@ -8,7 +8,7 @@
 function construct() {
 	//self.addOnloadEvent("levelLoading");
 	self.setRenderable(true);
-	script.loadLevel("eng_test");
+	//script.loadLevel("eng_test");
 	//AL.setCurrentThread(SoundSystem.getCaps());
 	//sound.getNewSource(0, 0, 0, 1, "gamedata/sounds/ambient/forest.ogg").play();
 	//sound.getNewSource(0, 0, 0, 1, "gamedata/sounds/ambient/wind.ogg").play();

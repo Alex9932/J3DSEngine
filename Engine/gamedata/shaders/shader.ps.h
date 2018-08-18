@@ -8,7 +8,6 @@ in vec2 pass_textureCoords;
 in vec3 pass_normal;
 in vec3 pass_pos;
 in vec4 shadowCoords;
-in vec3 outpos;
 
 out vec4 out_color;
 out vec4 out_position;
@@ -58,7 +57,7 @@ void main(void){
 	float objNearestLight = calcShadow();
 	float lightFactor = 1.0;
 	if(shadowCoords.z > objNearestLight + 0.0003) {
-		lightFactor -= shadowCoords.w * objNearestLight * 0.5;
+		lightFactor -= shadowCoords.w * objNearestLight * 0.8;
 	}
 
 	vec3 unitNormal = normalize(pass_normal);
@@ -73,7 +72,7 @@ void main(void){
 	}
 
 	out_color = diffuseColour;
-	out_position = vec4(outpos, 1);
+	out_position = vec4(pass_pos, 1);
 	out_normal = (vec4(unitNormal, 1) + 1) / 2;
 	//out_normal.xyz = normalize(unitNormal);
 	out_normal.a = lightFactor;

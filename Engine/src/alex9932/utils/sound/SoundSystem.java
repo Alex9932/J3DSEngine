@@ -43,6 +43,7 @@ public class SoundSystem {
 	}
 	
 	public static Buffer getSoundBuffer(String path){
+		System.out.println("[SoundSystem] Loading sound buffer from: " + path);
 		if(soundBufferMap.get(path) == null){
 			try {
 				Buffer buffer = new Buffer(path);

@@ -66,7 +66,6 @@ public class Engine {
 	
 	public void run() throws Exception {
 		game.startup();
-		Display.getDisplay().getEventSystem().setGrabbed(true);
 		while (running) {
 			profiler.startSelection("timeupdate");
 			if(Display.isCloseRequested()){
@@ -129,6 +128,7 @@ public class Engine {
 	}
 	
 	private void _loadLevel(String level, boolean staticonly) throws Exception {
+		Display.getDisplay().getEventSystem().setGrabbed(true);
 		System.out.println("[Engine] Starting load level: " + level + "...");
 		eventsys.sendSignal(Event.START_LOAD_LEVEL);
 		eventsys.sendSignal(Event.ON_LOAD_EVENT);

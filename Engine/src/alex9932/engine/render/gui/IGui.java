@@ -4,4 +4,6 @@ import alex9932.utils.gl.Shader;
 
 public interface IGui {
 	public void render(Shader shader);
+	public void show();
+	public void hide();
 }

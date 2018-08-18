@@ -15,7 +15,6 @@ in vec3 in_weights;
 out vec2 pass_textureCoords;
 out vec3 pass_normal;
 out vec3 pass_pos;
-out vec3 outpos;
 out vec4 shadowCoords;
 
 uniform mat4 proj;
@@ -26,7 +25,7 @@ uniform mat4 jointTransforms[MAX_JOINTS];
 uniform int model_type;
 uniform float shadowLength;
 
-const float transitionDist = 10.0;
+const float transitionDist = 2.0;
 
 void main(void){
 	mat4 mvp = proj * view * model;
@@ -41,14 +40,12 @@ void main(void){
 			vec4 worldNormal = jointTransform * vec4(in_normal, 0.0);
 			totalNormal += worldNormal * in_weights[i];
 		}
-		outpos = (model * totalLocalPos).xyz;
 		gl_Position = mvp * totalLocalPos;
 		pass_pos = (model * totalLocalPos).xyz;
 		pass_normal = totalNormal.xyz;
 	} else if(model_type == TYPE_MODEL_STATIC) {
-		outpos = (model * vec4(in_position, 1)).xyz;
 		gl_Position = mvp * vec4(in_position, 1);
-		pass_pos = (model * vec4(in_position, 1)).xyz;
+		pass_pos = (proj *model * vec4(in_position, 1)).xyz;
 		pass_normal = (model * vec4(in_normal, 0)).xyz;
 	}
 	
@@ -59,7 +56,7 @@ void main(void){
 	
 	pass_textureCoords = in_textureCoords;
 
-	float distance = length((view * vec4(in_position, 1.0)).xyz);
+	float distance = length((view * model * vec4(in_position, 1.0)).xyz);
 
 	distance = distance - (shadowLength - transitionDist);
 	distance = distance / transitionDist;

@@ -2,6 +2,9 @@ package alex9932.engine.main;
 
 import org.lwjgl.opengl.GL11;
 
+import alex9932.engine.game.Engine;
+import alex9932.engine.render.Renderer;
+import alex9932.engine.render.gui.GuiRenderer;
 import alex9932.engine.render.gui.IGui;
 import alex9932.utils.NVGUtils;
 import alex9932.utils.Resource;
@@ -13,7 +16,7 @@ public class Gui implements IGui {
 	
 	static {
 		texture = new Texture(Resource.getTexture("default.png"));
-		NVGUtils.registerFont(Resource.getFont("arial.ttf"), "font");
+		NVGUtils.registerFont(Resource.getFont("arial.ttf"), "font2");
 	}
 	
 	@Override
@@ -34,23 +37,33 @@ public class Gui implements IGui {
 		GL11.glVertex2d(0, 100);
 		GL11.glEnd();
 		GL11.glColor3f(1, 1, 1);
+		
+		Main.engine.renderer.guirenderer.drawString(GuiRenderer.DEFAULT_FONT, 10, 120, "Easy render!");
+		
 		shader.loadInt("has_texture", 0);
 		shader.stop();
 		NVGUtils.begin(1280, 720);
 		NVGUtils.color(1, 1, 1, 1);
-		NVGUtils.drawString("String", "font", 100, 100, 25);
+		NVGUtils.drawString("Version: " + Engine._version, "font2", 10, 25, 25);
+		NVGUtils.drawString("[opengl] Fps: " + Main.engine.getFps(), "font2", 10, 55, 25);
+		NVGUtils.drawString("[opengl] Total triangles: " + Main.engine.renderer.trianglescount, "font2", 10, 85, 25);
+		NVGUtils.drawString("[opengl] Renderer: " + Renderer._renderer, "font2", 10, 115, 25);
+		NVGUtils.drawString("[opengl] Version: " + Renderer._version + " GLSL: " + Renderer._glslversion, "font2", 10, 145, 25);
+		NVGUtils.drawString("X: " + Main.engine.renderer.getCamera().getX(), "font2", 10, 175, 25);
+		NVGUtils.drawString("Y: " + Main.engine.renderer.getCamera().getY(), "font2", 10, 205, 25);
+		NVGUtils.drawString("Z: " + Main.engine.renderer.getCamera().getZ(), "font2", 10, 235, 25);
+		NVGUtils.drawString("AngleX: " + Main.engine.renderer.getCamera().getAngleX(), "font2", 200, 175, 25);
+		NVGUtils.drawString("AngleY: " + Main.engine.renderer.getCamera().getAngleY(), "font2", 200, 205, 25);
 		NVGUtils.end();
 	}
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
 		
 	}
 }

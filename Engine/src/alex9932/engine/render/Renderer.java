@@ -29,6 +29,15 @@ public class Renderer implements IKeyListener{
 	public static final int TYPE_MODEL_STATIC = 0;
 	public static final int TYPE_MODEL_ANIMATED = 1;
 	public static final boolean IS_DEBUG = true;
+	public static final String _renderer;
+	public static final String _version;
+	public static final String _glslversion;
+	
+	static {
+		_renderer = GL11.glGetString(GL11.GL_RENDERER);
+		_version = GL11.glGetString(GL11.GL_VERSION);
+		_glslversion = GL11.glGetString(GL20.GL_SHADING_LANGUAGE_VERSION);
+	}
 	
 	private ICamera camera;
 	private Shader shader;
@@ -38,10 +47,11 @@ public class Renderer implements IKeyListener{
 	private ShadowMapRenderer shadowRenderer;
 	private Fbo fbo;
 	private Fbo msfbo;
-	private GuiRenderer guirenderer;
+	public GuiRenderer guirenderer;
 	private IGui gui = null;
 	public GBuffer gbuffer;
 	private Skybox skybox;
+	public int trianglescount;
 	
 	public Renderer() {
 		System.out.println("[Renderer] Starting up...");
@@ -120,6 +130,7 @@ public class Renderer implements IKeyListener{
 	}
 	
 	public void render(Scene scene) {
+		trianglescount = 0;
 		camera.updateMouse();
 
 		shadowRenderer.render(scene, LIGHT_DIR);
@@ -130,11 +141,10 @@ public class Renderer implements IKeyListener{
 		if(isWireframe) {
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 		}
-		GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		GL11.glClearColor(0.11f, 0.11f, 0.11f, 1);
 		
 		if(scene == null){
-			skybox.render(camera);
 			if(gui != null) {
 				GL11.glDisable(GL11.GL_CULL_FACE);
 				GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -146,6 +156,8 @@ public class Renderer implements IKeyListener{
 			Display.update();
 			return;
 		}
+		
+		skybox.render(camera);
 		
 		shader.start();
 		shader.loadMatrix4f("proj", camera.getProjection());
@@ -211,6 +223,7 @@ public class Renderer implements IKeyListener{
 				GL11.glEnable(GL11.GL_CULL_FACE);
 				GL11.glCullFace(GL11.GL_BACK);
 			}
+			trianglescount += object.getVao().getTriangleCount();
 		}
 
 		shader.stop();
@@ -256,6 +269,11 @@ public class Renderer implements IKeyListener{
 			isWireframe = false;
 		}
 	}
+	
+	public void resize() {
+		PostProcessing.destroy();
+		PostProcessing.init();
+	}
 
 	public void destroy() {
 		shader.destroy();
@@ -271,6 +289,15 @@ public class Renderer implements IKeyListener{
 	public void keyPressed(int key) {
 		if(key == GLFW.GLFW_KEY_F1) {
 			toggleWireframe();
+		}
+
+		if(key == GLFW.GLFW_KEY_F11) {
+			resize();
+			if(!Display.isFullscreen()) {
+				Display.setFullscreen(true);
+			} else {
+				Display.setFullscreen(false);
+			}
 		}
 	}
 

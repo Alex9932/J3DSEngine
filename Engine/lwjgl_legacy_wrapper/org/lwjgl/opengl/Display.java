@@ -46,4 +46,8 @@ public class Display {
 	public static boolean isFullscreen() {
 		return display.isFullscreen();
 	}
+
+	public static int getFps() {
+		return display.getFps();
+	}
 }

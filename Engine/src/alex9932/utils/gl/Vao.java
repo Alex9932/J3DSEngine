@@ -12,6 +12,7 @@ public class Vao {
 	private IntBuffer indices;
 	private boolean ignore_culling;
 	private String path;
+	private int vertexCount;
 
 	public Vao(String path) {
 		this.path = path;
@@ -44,6 +45,7 @@ public class Vao {
 		this.indices = BufferUtils.createIntBuffer(indices.length);
 		this.indices.put(indices);
 		this.indices.flip();
+		this.vertexCount = indices.length;
 	}
 	
 	public IntBuffer getIndices() {
@@ -60,5 +62,9 @@ public class Vao {
 
 	public String getPath() {
 		return path;
+	}
+
+	public int getTriangleCount() {
+		return vertexCount;
 	}
 }

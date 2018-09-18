@@ -23,6 +23,7 @@ import alex9932.script.FileIO;
 import alex9932.script.ScriptsEngine;
 import alex9932.utils.FmlLoader;
 import alex9932.utils.MatMath;
+import alex9932.utils.NVGUtils;
 import alex9932.utils.Profiler;
 import alex9932.utils.Resource;
 import alex9932.utils.Timer;
@@ -32,6 +33,7 @@ import alex9932.utils.gl.texture.Texture;
 import alex9932.utils.sound.SoundSystem;
 
 public class Engine {
+	public static final String _version = "0.3a pre 7";
 	public Timer timer;
 	public Scene scene;
 	public Renderer renderer;
@@ -55,6 +57,7 @@ public class Engine {
 		Display.getDisplay().setDebug();
 		System.out.println("[Engine] ~~~ OPENGL INFORMATION ~~~");
 		System.out.println("[Engine] [OpenGL] Version: " + GL11.glGetString(GL11.GL_VERSION));
+		System.out.println("[Engine] [OpenGL] Renderer: " + GL11.glGetString(GL11.GL_RENDERER));
 		System.out.println("[Engine] [OpenGL] GLSL: " + GL11.glGetString(GL20.GL_SHADING_LANGUAGE_VERSION));
 		eventsys = new EventSystem();
 		script = new ScriptsEngine(this);
@@ -65,6 +68,8 @@ public class Engine {
 	}
 	
 	public void run() throws Exception {
+		NVGUtils.registerFont(Resource.getTexture("fonts/gui.ttf"), "font");
+		
 		game.startup();
 		while (running) {
 			profiler.startSelection("timeupdate");
@@ -377,5 +382,9 @@ public class Engine {
 
 	public String getLevel() {
 		return level;
+	}
+
+	public int getFps() {
+		return Display.getFps();
 	}
 }

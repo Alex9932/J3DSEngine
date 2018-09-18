@@ -16,17 +16,25 @@ public class PostProcessing {
 	private static final float[] POSITIONS = { -1, 1, -1, -1, 1, 1, 1, -1 };	
 	private static Vao quad;
 
-	private static Contrast contrast = new Contrast();
-	private static VerticalBlur vblur = new VerticalBlur(1280, 720);
-	private static HorizontalBlur hblur = new HorizontalBlur(1280, 720);
-	private static Combiner combiner = new Combiner((int)Display.getWidth(), (int)Display.getHeight());
-	private static Bright bright = new Bright((int)Display.getWidth(), (int)Display.getHeight());
-	private static SSAO ssao = new SSAO((int)Display.getWidth(), (int)Display.getHeight());
-	private static Lighting lighting = new Lighting((int)Display.getWidth(), (int)Display.getHeight());
+	private static Contrast contrast;
+	private static VerticalBlur vblur;
+	private static HorizontalBlur hblur;
+	private static Combiner combiner;
+	private static Bright bright;
+	private static SSAO ssao;
+	private static Lighting lighting;
 
 	public static void init(){
 		quad = new Vao(null);
 		quad.put(new Vbo(0, 2, POSITIONS));
+
+		contrast = new Contrast();
+		vblur = new VerticalBlur((int)Display.getWidth(), (int)Display.getHeight());
+		hblur = new HorizontalBlur((int)Display.getWidth(), (int)Display.getHeight());
+		combiner = new Combiner((int)Display.getWidth(), (int)Display.getHeight());
+		bright = new Bright((int)Display.getWidth(), (int)Display.getHeight());
+		ssao = new SSAO((int)Display.getWidth(), (int)Display.getHeight());
+		lighting = new Lighting((int)Display.getWidth(), (int)Display.getHeight());
 	}
 	
 	public static void doPostProcessing(Vector3f lightDirection, Matrix4f proj, GBuffer gbuffer){
@@ -46,8 +54,13 @@ public class PostProcessing {
 		end();
 	}
 	
-	public static void cleanUp(){
-
+	public static void destroy(){
+		contrast.destroy();
+		vblur.destroy();
+		hblur.destroy();
+		combiner.destroy();
+		bright.destroy();
+		lighting.destroy();
 	}
 	
 	private static void start(){

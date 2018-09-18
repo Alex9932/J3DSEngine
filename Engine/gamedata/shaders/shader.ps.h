@@ -8,6 +8,7 @@ in vec2 pass_textureCoords;
 in vec3 pass_normal;
 in vec3 pass_pos;
 in vec4 shadowCoords;
+in float visibility;
 
 out vec4 out_color;
 out vec4 out_position;
@@ -24,6 +25,7 @@ uniform bool hasSpecular;
 
 const int pcfCount = 4;
 const float totalTexels = ((pcfCount * 2.0) + 1.0) * ((pcfCount * 2.0) + 1.0);
+const vec3 skyColor = vec3(0.3164, 0.2734, 0.5);
 
 float calcShadow() {
 	float objNearestLight;
@@ -78,4 +80,6 @@ void main(void){
 	out_normal.a = lightFactor;
 	out_specular = vec4(specularFactor, specularFactor, specularFactor, 1);
 	
+	out_color = mix(vec4(skyColor, 1), out_color, visibility);
+
 }

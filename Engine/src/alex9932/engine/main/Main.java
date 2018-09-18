@@ -79,14 +79,6 @@ public class Main extends IGameImpl implements IKeyListener{
 		if(key == GLFW.GLFW_KEY_ESCAPE) {
 			engine.shutdown();
 		}
-
-		if(key == GLFW.GLFW_KEY_F11) {
-			if(!Display.isFullscreen()) {
-				Display.setFullscreen(true);
-			} else {
-				Display.setFullscreen(false);
-			}
-		}
 		if(key == GLFW.GLFW_KEY_F10) {
 			engine.loadLevel("bm_test");
 		}

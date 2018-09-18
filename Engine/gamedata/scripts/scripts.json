@@ -1,5 +1,6 @@
 {
 	"scripts": [
-		"main.js"
+		"main.js",
+		"ui_mm,js"
 	]
 }

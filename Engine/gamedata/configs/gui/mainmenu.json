@@ -1,0 +1,47 @@
+{
+	"script": "ui_mm.js",
+	
+	"music": [
+		{
+			"file": "ui/mm4.ogg",
+			"gain": 0.1,
+			"repeat": true
+		}
+	],
+	
+	"ROOT": [
+		{
+			"type": "texture",
+			"x": 0,
+			"y": 0,
+			"w": "DYN_DISP_WIDTH",
+			"h": "DYN_DISP_HEIGHT",
+			"file": "gui/mm_bg.png",
+			"childs": [
+				{
+					"type": "texture",
+					"x": 300,
+					"y": 150,
+					"w": 680,
+					"h": 420,
+					"file": "default.png",
+					"childs": [
+						
+					]
+				},
+				{
+					"type": "text",
+					"x": 100,
+					"y": 100,
+					"w": 300,
+					"h": 30,
+					"size": 25,
+					"text": "Hello, JS!",
+					"childs": [
+						
+					]
+				}
+			]
+		}
+	]
+}

@@ -11,12 +11,15 @@ import alex9932.utils.MatMath;
 
 public class Camera implements ICamera {
 	private float x, y, z;
+	private float dx, dy, dz;
 	private float anglex, angley;
+	private float adx, ady;
 	private float near, far, fov;
 	private Matrix4f projection;
 	private Matrix4f view;
 	private float SENS = 0.1f;
 	private float SPEED = 0.01f;
+	private float MAX_SPEED = 1f;
 	
 	public Camera(float fov, float near, float far, float x, float y, float z) {
 		this.near = near;
@@ -40,8 +43,17 @@ public class Camera implements ICamera {
 	@Override
 	public void updateMouse() {
 		EventSystem system = Display.getDisplay().getEventSystem();
-		this.anglex -= system.getMouseDX() * SENS;
-		this.angley -= system.getMouseDY() * SENS;
+		adx -= system.getMouseDX() * SENS * 0.01f;
+		ady -= system.getMouseDY() * SENS * 0.01f;
+
+		if((float)(Math.sqrt((adx * adx) * (ady * ady))) < MAX_SPEED) {
+			this.anglex += adx;
+			this.angley += ady;
+		}
+		
+		this.adx /= 1.02f;
+		this.ady /= 1.02f;
+		
 		if (anglex > 360) {
 			anglex = 0;
 		}
@@ -54,37 +66,77 @@ public class Camera implements ICamera {
 	public void update() {
 		EventSystem system = Display.getDisplay().getEventSystem();
 
-		Vector3f dpos = new Vector3f();
 		Vector3f forward = new Vector3f();
 		forward.x = (float)Math.sin(Math.toRadians(-anglex));
 		forward.y = (float)Math.tan(Math.toRadians(angley));
 		forward.z = (float)Math.cos(Math.toRadians(-anglex));
+		forward.normalise();
 
 		//forward = new Vector3f(Matrix4f.transform(MatMath.createRotationMatrix(anglex, angley), new Vector4f(1, 0, 0, 1), null));
 		
 		if(system.isKeyDown(GLFW.GLFW_KEY_W)){
-			Vector3f.sub(dpos, forward, dpos);
+			if(speed() < MAX_SPEED) {
+				dx -= forward.x * 0.01f;
+				dy -= forward.y * 0.01f;
+				dz -= forward.z * 0.01f;
+			}else {
+				dx /= 2;
+				dy /= 2;
+				dz /= 2;
+			}
 		}
 		
 		if(system.isKeyDown(GLFW.GLFW_KEY_S)){
-			Vector3f.add(dpos, forward, dpos);
+			if(speed() < MAX_SPEED) {
+				dx += forward.x * 0.01f;
+				dy += forward.y * 0.01f;
+				dz += forward.z * 0.01f;
+			}else {
+				dx /= 2;
+				dy /= 2;
+				dz /= 2;
+			}
 		}
 		
 		if(system.isKeyDown(GLFW.GLFW_KEY_A)){
-			Vector3f.add(dpos, Vector3f.cross(forward, new Vector3f(0, 1, 0), null), dpos);
+			if(speed() < MAX_SPEED) {
+				Vector3f dpos = Vector3f.cross(forward, new Vector3f(0, 1, 0), null);
+				dx += dpos.x * 0.01f;
+				dy += dpos.y * 0.01f;
+				dz += dpos.z * 0.01f;
+			}else {
+				dx /= 2;
+				dy /= 2;
+				dz /= 2;
+			}
 		}
 		
 		if(system.isKeyDown(GLFW.GLFW_KEY_D)){
-			Vector3f.sub(dpos, Vector3f.cross(forward, new Vector3f(0, 1, 0), null), dpos);
+			if(speed() < MAX_SPEED) {
+				Vector3f dpos = Vector3f.cross(forward, new Vector3f(0, 1, 0), null);
+				dx -= dpos.x * 0.01f;
+				dy -= dpos.y * 0.01f;
+				dz -= dpos.z * 0.01f;
+			}else {
+				dx /= 2;
+				dy /= 2;
+				dz /= 2;
+			}
 		}
-
-		try {dpos.normalise();} catch (Exception e) {}
 		
-		this.x += dpos.x * SPEED;
-		this.y += dpos.y * SPEED;
-		this.z += dpos.z * SPEED;
+		this.x += dx * SPEED;
+		this.y += dy * SPEED;
+		this.z += dz * SPEED;
+
+		this.dx /= 1.01f;
+		this.dy /= 1.01f;
+		this.dz /= 1.01f;
 		
 		this.view = MatMath.createViewMatrix(x, y, z, anglex, angley);
+	}
+
+	private float speed() {
+		return (float)Math.sqrt((this.dx * this.dx) + (this.dy * this.dy) + (this.dz * this.dz));
 	}
 
 	@Override

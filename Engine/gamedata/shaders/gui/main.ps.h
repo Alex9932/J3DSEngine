@@ -10,7 +10,11 @@ uniform int has_texture;
 
 void main () {
 	if (has_texture == 1) {
-		out_color = color * texture(tex, tex_coord);
+		vec4 texcolor = texture(tex, tex_coord);
+		if(texcolor.a < 0.5) {
+			discard;
+		}
+		out_color = color * texcolor;
 	} else if (has_texture == 0) {
 		out_color = color;
 	}

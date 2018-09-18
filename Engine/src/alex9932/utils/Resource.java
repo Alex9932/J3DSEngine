@@ -9,7 +9,7 @@ public class Resource {
 	private static String CONFIGS_PATH = GAMEDATA + "configs/";
 	private static String TEXTURES_PATH = GAMEDATA + "textures/";
 	private static String LEVELS_PATH = GAMEDATA + "levels/";
-	private static String FONTS_PATH = GAMEDATA + "fonts/";
+	private static String FONTS_PATH = "fonts/";
 	private static String SAVES_PATH = "saves/";
 
 	public static String getModel(String file) {

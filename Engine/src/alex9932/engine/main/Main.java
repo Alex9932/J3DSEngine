@@ -1,13 +1,20 @@
 package alex9932.engine.main;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.Display;
 
+import alex9932.engine.animation.AnimatedModel;
+import alex9932.engine.animation.AnimatedModelLoader;
+import alex9932.engine.animation.Animation;
+import alex9932.engine.animation.AnimationLoader;
+import alex9932.engine.game.AnimatedGameObject;
 import alex9932.engine.game.Engine;
 import alex9932.engine.game.GameObject;
 import alex9932.engine.game.IGameImpl;
+import alex9932.engine.physics.Body;
 import alex9932.engine.physics.Material;
 import alex9932.utils.FmlLoader;
 import alex9932.utils.IKeyListener;
@@ -24,6 +31,8 @@ public class Main extends IGameImpl implements IKeyListener{
 	private Texture texture;
 	private Texture specular;
 
+	//TODO: Gui buttons!
+	
 	@Override
 	public void startup() throws Exception {
 		Display.getDisplay().getEventSystem().addKeyListener(this);
@@ -45,13 +54,13 @@ public class Main extends IGameImpl implements IKeyListener{
 	
 	@Override
 	public void onLevelLoaded(String level) {
-		/**Animation animation = AnimationLoader.loadAnimation(new File(Resource.getModel("model.dae")));
+		Animation animation = AnimationLoader.loadAnimation(new File(Resource.getModel("model.dae")));
 		AnimatedModel animModel = AnimatedModelLoader.loadEntity(Resource.getModel("model.dae"), Resource.getTexture("diffuse.png"));
 		Body body = engine.physics.createTMeshBody(1, 10, 0, 5, 0, animModel.getEntityData().getMeshData().getVertices(), animModel.getEntityData().getMeshData().getIndices(), Material.METAL);
 		engine.physics.setFixed(body.getGeom());
 		AnimatedGameObject object = new AnimatedGameObject(body, animModel);
 		object.doAnimation(animation);
-		engine.scene.add(object);**/
+		engine.scene.add(object);
 		engine.renderer.renderGui(new Gui());
 		Source s0 = SoundSystem.createSource(SoundSystem.getSoundBuffer(Resource.getSound("ambient/forest.ogg")), 0, 0, 0);
 		Source s1 = SoundSystem.createSource(SoundSystem.getSoundBuffer(Resource.getSound("ambient/wind.ogg")), 0, 0, 0);
@@ -59,6 +68,14 @@ public class Main extends IGameImpl implements IKeyListener{
 		s1.repeat(true);
 		s0.play();
 		s1.play();
+	}
+	
+	@Override
+	public void update() {
+		if(Display.getDisplay().getEventSystem().isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT) &&
+			Display.getDisplay().getEventSystem().isKeyDown(GLFW.GLFW_KEY_ESCAPE)) {
+			engine.shutdown();
+		}
 	}
 	
 	public static void main(String[] args) throws Exception {
@@ -74,10 +91,6 @@ public class Main extends IGameImpl implements IKeyListener{
 			double z = engine.renderer.getCamera().getZ();
 			GameObject obj = new GameObject(engine.physics.createSphereBody(15, 13, x, y, z, 1, Material.METAL), texture, specular, vao);
 			engine.scene.add(obj);
-		}
-		
-		if(key == GLFW.GLFW_KEY_ESCAPE) {
-			engine.shutdown();
 		}
 		if(key == GLFW.GLFW_KEY_F10) {
 			engine.loadLevel("bm_test");

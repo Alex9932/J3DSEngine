@@ -101,6 +101,10 @@ public class Engine {
 		_shutdown();
 	}
 	
+	public Profiler getProfiler() {
+		return profiler;
+	}
+	
 	private void _shutdown() {
 		game.shutdown();
 		physics.destroy();

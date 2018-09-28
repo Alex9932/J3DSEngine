@@ -43,16 +43,16 @@ public class Camera implements ICamera {
 	@Override
 	public void updateMouse() {
 		EventSystem system = Display.getDisplay().getEventSystem();
-		adx -= system.getMouseDX() * SENS * 0.01f;
-		ady -= system.getMouseDY() * SENS * 0.01f;
+		adx -= system.getMouseDX() * SENS * 0.05f;
+		ady -= system.getMouseDY() * SENS * 0.05f;
 
 		if((float)(Math.sqrt((adx * adx) * (ady * ady))) < MAX_SPEED) {
 			this.anglex += adx;
 			this.angley += ady;
 		}
 		
-		this.adx /= 1.02f;
-		this.ady /= 1.02f;
+		this.adx /= 1.04f;
+		this.ady /= 1.04f;
 		
 		if (anglex > 360) {
 			anglex = 0;

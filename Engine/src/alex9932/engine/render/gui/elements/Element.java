@@ -107,6 +107,22 @@ public abstract class Element {
 		this.parent = parent;
 	}
 
+	public float getGlobalX() {
+		float x = this.x;
+		if(parent != null) {
+			x += this.parent.getGlobalX();
+		}
+		return x;
+	}
+
+	public float getGlobalY() {
+		float y = this.y;
+		if(parent != null) {
+			y += this.parent.getGlobalY();
+		}
+		return y;
+	}
+
 	public void draw() {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, fboTexture);
 		GL11.glBegin(GL11.GL_QUADS);

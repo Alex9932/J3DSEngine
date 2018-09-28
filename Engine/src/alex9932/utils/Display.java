@@ -9,7 +9,6 @@ import org.lwjgl.glfw.GLFWImage.Buffer;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GLUtil;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
@@ -76,7 +75,6 @@ public class Display {
 		GLFW.glfwMakeContextCurrent(window);
 		GLFW.glfwSwapInterval(0);
 		GL.createCapabilities();
-		GLUtil.setupDebugMessageCallback();
 	}
 	
 	public void destroy() {
@@ -152,7 +150,7 @@ public class Display {
 	}
 
 	public void setDebug() {
-		this.debug  = true;
+		this.debug = true;
 	}
 
 	public void setSize(float width, float height) {

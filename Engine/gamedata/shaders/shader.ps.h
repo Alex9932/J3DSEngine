@@ -70,15 +70,14 @@ void main(void){
 		vec3 reflectDirection = normalize(reflect(lightDirection, unitNormal));
 		specularFactor = dot(directionToCam, reflectDirection);
 		specularFactor = pow(specularFactor, 2);
-		specularFactor = specularFactor;
+		//specularFactor = specularFactor;
 	}
 
 	out_color = diffuseColour;
 	out_position = vec4(pass_pos, 1);
 	out_normal = (vec4(unitNormal, 1) + 1) / 2;
 	//out_normal.xyz = normalize(unitNormal);
-	out_normal.a = lightFactor;
-	out_specular = vec4(specularFactor, specularFactor, specularFactor, 1);
+	out_specular = vec4(lightFactor, specularFactor, 1, 1);
 	
 	out_color = mix(vec4(skyColor, 1), out_color, visibility);
 

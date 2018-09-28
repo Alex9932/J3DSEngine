@@ -4,7 +4,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.lwjgl.opengl.Display;
 
+import alex9932.engine.main.Main;
 import alex9932.engine.render.gui.elements.Element;
+import alex9932.engine.render.gui.elements.ElementButton;
 import alex9932.engine.render.gui.elements.ElementText;
 import alex9932.engine.render.gui.elements.ElementTexture;
 import alex9932.utils.Resource;
@@ -39,14 +41,25 @@ public abstract class ParsableGui implements IGui{
 		} else if (type.equals("text")) {
 			element = new ElementText(x, y, w, h);
 			((ElementText)element).setText(elem.getString("text"));
-			((ElementText)element).setSize((float)elem.getDouble("size"));
-			((ElementText)element).setFont(new Font(Resource.getTexture("fonts/gui.ttf"), 25));
+			((ElementText)element).setFont(new Font(Resource.getTexture("fonts/gui.ttf"), (float)elem.getDouble("size")));
 		}
 		
 		JSONArray childs = elem.getJSONArray("childs");
 		for (int i = 0; i < childs.length(); i++) {
 			element.add(parseElement(childs.getJSONObject(i)));
 		}
+		
+		ElementButton button = new ElementButton(100, 100, 200, 50, new ElementButton.IButtonHandler() {
+			@Override
+			public void invoke() {
+				
+			}
+		});
+		button.setText("Zhopa");
+		button.setFont(new Font(Resource.getTexture("fonts/gui.ttf"), 20));
+		Display.getDisplay().getEventSystem().addMouseListener(button);
+		
+		element.add(button);
 		
 		return element;
 	}

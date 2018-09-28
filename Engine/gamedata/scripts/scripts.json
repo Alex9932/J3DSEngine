@@ -1,6 +1,6 @@
 {
 	"scripts": [
 		"main.js",
-		"ui_mm,js"
+		"ui_mm.js"
 	]
 }

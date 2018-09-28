@@ -29,17 +29,39 @@
 						
 					]
 				},
+				
+				{
+					"type": "texture",
+					"x": 10,
+					"y": 10,
+					"w": 261,
+					"h": 327,
+					"file": "gui/buttons.png",
+					"childs": [
+						
+					]
+				},
+				
+				
 				{
 					"type": "text",
 					"x": 100,
 					"y": 100,
-					"w": 300,
-					"h": 30,
-					"size": 25,
-					"text": "Hello, JS!",
-					"childs": [
-						
-					]
+					"w": 0,
+					"h": 0,
+					"size": 15,
+					"text": "Hello, world!",
+					"childs": []
+				},
+				{
+					"type": "text",
+					"x": 100,
+					"y": 125,
+					"w": 0,
+					"h": 0,
+					"size": 15,
+					"text": "Hello, world2!",
+					"childs": []
 				}
 			]
 		}

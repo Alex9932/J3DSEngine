@@ -17,6 +17,10 @@
 			"file": "default.png"
 		},
 		{
+			"name": "t_wood",
+			"file": "wood.png"
+		},
+		{
 			"name": "t_pine",
 			"file": "pine.png"
 		}
@@ -31,7 +35,7 @@
 			"mass": 10,
 			"friction": 11,
 			"model": "dragon",
-			"texture": "t_box"
+			"texture": "t_wood"
 		},
 		{
 			"use_phys": false,

@@ -17,12 +17,13 @@ const vec2 lightBias = vec2(0.7, 0.6);
 void main() {
 	vec4 diffuse = texture(diffuse, coords);
 	vec4 normal = texture(normals, coords);
+	vec4 spec = texture(specular, coords);
 	float ssao = texture(ssao, coords).r;
 
-	vec3 unitNormal = (normal.xyz * 2) - 1;
+	vec3 unitNormal = normalize((normal.xyz * 2) - 1);
 
-	float shadowFactor = normal.a;
-	int s = 5;
+	float shadowFactor = spec.r;
+	/**int s = 5;
 	int e = 0;
 	for (int i = -s; i <= s; i++) {
 		for (int k = -s; k <= s; k++) {
@@ -30,14 +31,14 @@ void main() {
 		}
 		e++;
 	}
-	shadowFactor /= (e * e);
+	shadowFactor /= (e * e);**/
 
 	float diffuseLight = (max(dot(-lightDirection, unitNormal), 0.0) * lightBias.x + lightBias.y);// * ssao;
-	float specFactor = (texture(specular, coords).r * 0.5) * shadowFactor;
+	float specFactor = (spec.g * 0.5) * shadowFactor;
 
 	vec4 lighting = diffuse;
 	lighting *= diffuseLight;
 	lighting *= shadowFactor;
 
-	color = lighting + specFactor;
+	color = lighting;
 }

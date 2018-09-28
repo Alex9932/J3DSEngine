@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL43;
 import org.lwjgl.opengl.GLDebugMessageCallbackI;
+import org.lwjgl.opengl.GLUtil;
 import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -28,7 +29,7 @@ import alex9932.utils.gl.Shader;
 public class Renderer implements IKeyListener{
 	public static final int TYPE_MODEL_STATIC = 0;
 	public static final int TYPE_MODEL_ANIMATED = 1;
-	public static final boolean IS_DEBUG = true;
+	public static final boolean IS_DEBUG = false;
 	public static final String _renderer;
 	public static final String _version;
 	public static final String _glslversion;
@@ -58,6 +59,7 @@ public class Renderer implements IKeyListener{
 		Display.getDisplay().getEventSystem().addKeyListener(this);
 		
 		if(IS_DEBUG) {
+			GLUtil.setupDebugMessageCallback();
 			GL11.glEnable(GL43.GL_DEBUG_OUTPUT);
 			GL11.glEnable(GL43.GL_DEBUG_OUTPUT_SYNCHRONOUS);
 			GL43.glDebugMessageCallback(new GLDebugMessageCallbackI() {

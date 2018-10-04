@@ -1,8 +1,8 @@
 package alex9932.engine.render;
 
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
+import alex9932.engine.game.Display;
 import alex9932.utils.gl.Fbo;
 
 public class ImageRenderer {

@@ -2,9 +2,8 @@ package alex9932.engine.render.gui;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.lwjgl.opengl.Display;
 
-import alex9932.engine.main.Main;
+import alex9932.engine.game.Display;
 import alex9932.engine.render.gui.elements.Element;
 import alex9932.engine.render.gui.elements.ElementButton;
 import alex9932.engine.render.gui.elements.ElementText;
@@ -20,14 +19,14 @@ public abstract class ParsableGui implements IGui{
 
 		try {
 			String keyw = elem.getString("w");
-			if(keyw.equals("DYN_DISP_WIDTH")){w = (int)Display.getWidth();} else if(keyw.equals("DYN_DISP_HEIGHT")){w = (int)Display.getHeight();}
+			if(keyw.equals("DYN_DISP_WIDTH")){w = Display.getWidth();} else if(keyw.equals("DYN_DISP_HEIGHT")){w = Display.getHeight();}
 		} catch (Exception e) {
 			w = elem.getInt("w");
 		}
 		
 		try {
 			String keyh = elem.getString("h");
-			if(keyh.equals("DYN_DISP_WIDTH")){h = (int)Display.getWidth();} else if(keyh.equals("DYN_DISP_HEIGHT")){h = (int)Display.getHeight();}
+			if(keyh.equals("DYN_DISP_WIDTH")){h = Display.getWidth();} else if(keyh.equals("DYN_DISP_HEIGHT")){h = Display.getHeight();}
 		} catch (Exception e) {
 			h = elem.getInt("h");
 		}
@@ -57,7 +56,7 @@ public abstract class ParsableGui implements IGui{
 		});
 		button.setText("Zhopa");
 		button.setFont(new Font(Resource.getTexture("fonts/gui.ttf"), 20));
-		Display.getDisplay().getEventSystem().addMouseListener(button);
+		Display.getEventSystem().addMouseListener(button);
 		
 		element.add(button);
 		

@@ -1,12 +1,12 @@
 package alex9932.engine.render.pp;
 
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
+import alex9932.engine.game.Display;
 import alex9932.engine.render.GBuffer;
 import alex9932.utils.gl.Vao;
 import alex9932.utils.gl.Vbo;
@@ -29,12 +29,12 @@ public class PostProcessing {
 		quad.put(new Vbo(0, 2, POSITIONS));
 
 		contrast = new Contrast();
-		vblur = new VerticalBlur((int)Display.getWidth(), (int)Display.getHeight());
-		hblur = new HorizontalBlur((int)Display.getWidth(), (int)Display.getHeight());
-		combiner = new Combiner((int)Display.getWidth(), (int)Display.getHeight());
-		bright = new Bright((int)Display.getWidth(), (int)Display.getHeight());
-		ssao = new SSAO((int)Display.getWidth(), (int)Display.getHeight());
-		lighting = new Lighting((int)Display.getWidth(), (int)Display.getHeight());
+		vblur = new VerticalBlur(Display.getWidth(), Display.getHeight());
+		hblur = new HorizontalBlur(Display.getWidth(), Display.getHeight());
+		combiner = new Combiner(Display.getWidth(), Display.getHeight());
+		bright = new Bright(Display.getWidth(), Display.getHeight());
+		ssao = new SSAO(Display.getWidth(), Display.getHeight());
+		lighting = new Lighting(Display.getWidth(), Display.getHeight());
 	}
 	
 	public static void doPostProcessing(Vector3f lightDirection, Matrix4f proj, GBuffer gbuffer){

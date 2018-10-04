@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.lwjgl.opengl.Display;
 
+import alex9932.engine.game.Display;
 import alex9932.engine.render.gui.ParsableGui;
 import alex9932.engine.render.gui.elements.Element;
 import alex9932.engine.render.gui.elements.RootElement;
@@ -23,7 +23,7 @@ public class GuiMainMenu extends ParsableGui {
 	
 	static{
 		sounds = new ArrayList<Source>();
-		ROOT_ELEMENT = new RootElement((int)Display.getWidth(), (int)Display.getHeight());
+		ROOT_ELEMENT = new RootElement(Display.getWidth(), Display.getHeight());
 		
 		try {
 			config = new JSONObject(FileIO.read(Resource.getConfig("gui/mainmenu.json")));

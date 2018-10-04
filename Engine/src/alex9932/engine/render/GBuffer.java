@@ -3,11 +3,12 @@ package alex9932.engine.render;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+
+import alex9932.engine.game.Display;
 
 public class GBuffer {
 	private int width;
@@ -77,7 +78,7 @@ public class GBuffer {
 	
 	public void unbind() {
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-		GL11.glViewport(0, 0, (int)Display.getWidth(), (int)Display.getHeight());
+		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
 	}
 	
 	public int getDiffuse() {

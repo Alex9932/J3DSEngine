@@ -2,11 +2,12 @@ package alex9932.engine.render;
 
 import java.nio.ByteBuffer;
 
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL32;
+
+import alex9932.engine.game.Display;
 
 public class ShadowFrameBuffer {
 
@@ -32,7 +33,7 @@ public class ShadowFrameBuffer {
 
 	protected void unbindFrameBuffer() {
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-		GL11.glViewport(0, 0, (int)Display.getWidth(), (int)Display.getHeight());
+		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
 	}
 
 	protected int getShadowMap() {

@@ -4,13 +4,13 @@ import java.io.File;
 import java.io.IOException;
 
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.Display;
 
 import alex9932.engine.animation.AnimatedModel;
 import alex9932.engine.animation.AnimatedModelLoader;
 import alex9932.engine.animation.Animation;
 import alex9932.engine.animation.AnimationLoader;
 import alex9932.engine.game.AnimatedGameObject;
+import alex9932.engine.game.Display;
 import alex9932.engine.game.Engine;
 import alex9932.engine.game.GameObject;
 import alex9932.engine.game.IGameImpl;
@@ -30,12 +30,10 @@ public class Main extends IGameImpl implements IKeyListener{
 	private Vao vao;
 	private Texture texture;
 	private Texture specular;
-
-	//TODO: Gui buttons!
 	
 	@Override
 	public void startup() throws Exception {
-		Display.getDisplay().getEventSystem().addKeyListener(this);
+		Display.getEventSystem().addKeyListener(this);
 		
 		//ObjModel l = new ObjModel(Resource.getModel("untitled.obj"));
 		//new FmlWriter(Resource.getModel("untitled.fml"), l.getVerts(), l.getNormalsArray(), l.getTangentsArray(), l.getTextureCoord(), l.getInds());
@@ -72,8 +70,8 @@ public class Main extends IGameImpl implements IKeyListener{
 	
 	@Override
 	public void update() {
-		if(Display.getDisplay().getEventSystem().isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT) &&
-			Display.getDisplay().getEventSystem().isKeyDown(GLFW.GLFW_KEY_ESCAPE)) {
+		if(Display.getEventSystem().isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT) &&
+			Display.getEventSystem().isKeyDown(GLFW.GLFW_KEY_ESCAPE)) {
 			engine.shutdown();
 		}
 	}

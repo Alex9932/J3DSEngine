@@ -1,7 +1,6 @@
 package alex9932.engine.game;
 
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -42,7 +41,7 @@ public class Camera implements ICamera {
 
 	@Override
 	public void updateMouse() {
-		EventSystem system = Display.getDisplay().getEventSystem();
+		EventSystem system = Display.getEventSystem();
 		adx -= system.getMouseDX() * SENS * 0.05f;
 		ady -= system.getMouseDY() * SENS * 0.05f;
 
@@ -64,7 +63,7 @@ public class Camera implements ICamera {
 	
 	@Override
 	public void update() {
-		EventSystem system = Display.getDisplay().getEventSystem();
+		EventSystem system = Display.getEventSystem();
 
 		Vector3f forward = new Vector3f();
 		forward.x = (float)Math.sin(Math.toRadians(-anglex));

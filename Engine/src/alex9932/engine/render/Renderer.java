@@ -2,7 +2,6 @@ package alex9932.engine.render;
 
 import org.json.JSONObject;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
@@ -15,6 +14,7 @@ import org.lwjgl.util.vector.Vector3f;
 import alex9932.engine.animation.AnimationConstants;
 import alex9932.engine.game.AnimatedGameObject;
 import alex9932.engine.game.Camera;
+import alex9932.engine.game.Display;
 import alex9932.engine.game.GameObject;
 import alex9932.engine.game.Scene;
 import alex9932.engine.render.gui.GuiRenderer;
@@ -56,7 +56,7 @@ public class Renderer implements IKeyListener{
 	
 	public Renderer() {
 		System.out.println("[Renderer] Starting up...");
-		Display.getDisplay().getEventSystem().addKeyListener(this);
+		Display.getEventSystem().addKeyListener(this);
 		
 		if(IS_DEBUG) {
 			GLUtil.setupDebugMessageCallback();

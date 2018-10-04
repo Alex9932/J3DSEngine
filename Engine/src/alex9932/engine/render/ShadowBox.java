@@ -1,9 +1,10 @@
 package alex9932.engine.render;
 
-import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+
+import alex9932.engine.game.Display;
 
 public class ShadowBox {
 

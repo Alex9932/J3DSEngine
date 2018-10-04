@@ -10,7 +10,6 @@ import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Vector3f;
@@ -53,8 +52,8 @@ public class Engine {
 		this.profiler = new Profiler();
 		timer = new Timer(1024);
 		scene = new Scene();
-		Display.create();
-		Display.getDisplay().setDebug();
+		Display.create(280, 720, "Game");
+		Display.setDebug();
 		System.out.println("[Engine] ~~~ OPENGL INFORMATION ~~~");
 		System.out.println("[Engine] [OpenGL] Version: " + GL11.glGetString(GL11.GL_VERSION));
 		System.out.println("[Engine] [OpenGL] Renderer: " + GL11.glGetString(GL11.GL_RENDERER));
@@ -137,7 +136,7 @@ public class Engine {
 	}
 	
 	private void _loadLevel(String level, boolean staticonly) throws Exception {
-		Display.getDisplay().getEventSystem().setGrabbed(true);
+		Display.getEventSystem().setGrabbed(true);
 		System.out.println("[Engine] Starting load level: " + level + "...");
 		eventsys.sendSignal(Event.START_LOAD_LEVEL);
 		eventsys.sendSignal(Event.ON_LOAD_EVENT);

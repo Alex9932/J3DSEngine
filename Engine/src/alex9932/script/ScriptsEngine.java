@@ -9,8 +9,8 @@ import javax.script.ScriptEngineManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.lwjgl.openal.AL;
-import org.lwjgl.opengl.Display;
 
+import alex9932.engine.game.Display;
 import alex9932.engine.game.Engine;
 import alex9932.engine.render.GL;
 import alex9932.utils.sound.SoundSystem;
@@ -42,8 +42,8 @@ public class ScriptsEngine {
 			for (int i = 0; i < array.length(); i++) {
 				Script script = new Script(this, FileIO.read(SCRIPTS_PATH + array.getString(i)));
 				
-				Display.getDisplay().getEventSystem().addKeyListener(script);
-				Display.getDisplay().getEventSystem().addMouseListener(script);
+				Display.getEventSystem().addKeyListener(script);
+				Display.getEventSystem().addMouseListener(script);
 				engine.getEventSystem().addEventHandler(script);
 				scripts.put(array.getString(i), script);
 			}
@@ -61,7 +61,7 @@ public class ScriptsEngine {
 	}
 	
 	public int getFps() {
-		return Display.getDisplay().getFps();
+		return Display.getFps();
 	}
 	
 	public Json getJson() {
